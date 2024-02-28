@@ -140,25 +140,12 @@ namespace IndustrialGatewayToWebServer
                     DialogResult diar = MessageBox.Show("Are you sure update connection ?", "Update Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (diar == DialogResult.Yes)
                     {
-                        using (var cmdDb = new SQLiteCommand($"UPDATE COMMUNICATION SET  DEVICE_NAME='{deviceNameRTU.Text}', COMM_PORT = '{COMPortRTU.Text}', DEVICE_ID = '{SlaveIDRTU.Value}' WHERE DEVICE_NAME = '{SelectedNAME}'", connectDb))
+                       using (var cmdDb = new SQLiteCommand($"UPDATE COMMUNICATION SET DEVICE_NAME='{deviceNameRTU.Text}', COMM_PORT = '{COMPortRTU.Text}', DEVICE_ID = '{SlaveIDRTU.Value}' WHERE DEVICE_NAME = '{SelectedNAME}'", connectDb))
                         {
                             try
                             {
                                 cmdDb.Connection.Open();
                                 cmdDb.ExecuteNonQuery();
-                                using (var cmdDb1 = new SQLiteCommand($"UPDATE MODBUS_RTU SET  DEVICE_NAME='{deviceNameRTU.Text}', COMM_PORT = '{COMPortRTU.Text}', BAUDRATE = '{baudRateRTU.Text}', DATABITS = '{DataBitsRTU.Text}', PARITY = '{ParityRTU.Text}' WHERE DEVICE_NAME = '{SelectedNAME}'", connectDb))
-                                {
-                                    try
-                                    {
-                                        cmdDb1.Connection.Open();
-                                        cmdDb1.ExecuteNonQuery();
-                                        MessageBox.Show("Connection Updated");
-                                        DataViewFill($"SELECT * FROM COMMUNICATION");
-                                    }
-                                    catch (Exception)
-                                    {
-                                    }
-                                }        
                             }
 
                             catch (Exception)
@@ -167,6 +154,61 @@ namespace IndustrialGatewayToWebServer
                             }
                         }
 
+                        using (var cmdDb = new SQLiteCommand($"UPDATE MODBUS_RTU SET DEVICE_NAME='{deviceNameRTU.Text}', COM_PORT = '{COMPortRTU.Text}', BAUDRATE = '{baudRateRTU.Text}', DATABITS = '{DataBitsRTU.Text}', PARITY = '{ParityRTU.Text}' WHERE DEVICE_NAME = '{SelectedNAME}'", connectDb))
+                        {
+                            try
+                            {
+                                cmdDb.ExecuteNonQuery();
+                                MessageBox.Show("Connection Updated");
+                                DataViewFill($"SELECT * FROM COMMUNICATION");
+                            }
+                            catch (Exception)
+                            {
+                            }
+                        }
+
+                    }
+
+                }
+            }
+        }
+
+        private void connectionDeleteRTU_Click(object sender, EventArgs e)
+        {
+            String SelectedNAME = addedDeviceName.SelectedItem.ToString();
+
+            using (var connectDb = new SQLiteConnection(sqllitedb_constr))
+            {
+                DialogResult diar = MessageBox.Show("Are you sure delete connection ?", "Delete Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (diar == DialogResult.Yes)
+                {
+                    using (var cmdDb = new SQLiteCommand($"DELETE FROM COMMUNICATION WHERE DEVICE_NAME = '{SelectedNAME}'", connectDb))
+                    {
+                        try
+                        {
+                            cmdDb.Connection.Open();
+                            cmdDb.ExecuteNonQuery();
+                        }
+
+                        catch (Exception)
+                        {
+                        }
+                    }
+
+                    using (var cmdDb = new SQLiteCommand($"DELETE FROM MODBUS_RTU WHERE DEVICE_NAME = '{SelectedNAME}'", connectDb))
+                    {
+                        try
+                        {
+                            //cmdDb.Connection.Open();
+                            cmdDb.ExecuteNonQuery();
+                            MessageBox.Show("Connection Deleted");
+                            DataViewFill($"SELECT * FROM COMMUNICATION");
+                            this.Close();
+                        }
+
+                        catch (Exception)
+                        {
+                        }
                     }
 
                 }

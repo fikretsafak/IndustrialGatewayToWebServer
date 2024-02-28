@@ -185,6 +185,7 @@ namespace IndustrialGatewayToWebServer
             this.Controls.Add(this.IPadressTCP);
             this.Controls.Add(this.addedDeviceIP);
             this.Controls.Add(this.dataGridView1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "TCPupdate";
             this.Text = "TCPupdate";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();

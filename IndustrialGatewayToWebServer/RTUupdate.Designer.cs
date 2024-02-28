@@ -53,16 +53,17 @@ namespace IndustrialGatewayToWebServer
             // 
             // connectionDeleteRTU
             // 
-            this.connectionDeleteRTU.Location = new System.Drawing.Point(6, 294);
+            this.connectionDeleteRTU.Location = new System.Drawing.Point(11, 276);
             this.connectionDeleteRTU.Name = "connectionDeleteRTU";
             this.connectionDeleteRTU.Size = new System.Drawing.Size(200, 29);
             this.connectionDeleteRTU.TabIndex = 53;
             this.connectionDeleteRTU.Text = "Delete Connection";
             this.connectionDeleteRTU.UseVisualStyleBackColor = true;
+            this.connectionDeleteRTU.Click += new System.EventHandler(this.connectionDeleteRTU_Click);
             // 
             // connectionUpdateRTU
             // 
-            this.connectionUpdateRTU.Location = new System.Drawing.Point(6, 259);
+            this.connectionUpdateRTU.Location = new System.Drawing.Point(11, 241);
             this.connectionUpdateRTU.Name = "connectionUpdateRTU";
             this.connectionUpdateRTU.Size = new System.Drawing.Size(200, 29);
             this.connectionUpdateRTU.TabIndex = 52;
@@ -217,7 +218,7 @@ namespace IndustrialGatewayToWebServer
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(219, 340);
+            this.ClientSize = new System.Drawing.Size(219, 315);
             this.Controls.Add(this.SlaveIDRTU);
             this.Controls.Add(this.label6);
             this.Controls.Add(this.ParityRTU);
@@ -234,6 +235,7 @@ namespace IndustrialGatewayToWebServer
             this.Controls.Add(this.deviceNameRTU);
             this.Controls.Add(this.addedDeviceName);
             this.Controls.Add(this.dataGridView1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Name = "RTUupdate";
             this.Text = "RTUupdate";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
