@@ -40,6 +40,48 @@ namespace deneme_tcp
             }
 
 
+            int GetInputRegisterData(int startAddress)
+            {
+                if (_client.Connected)
+                {
+                    int[] inputValues = _client.ReadInputRegisters(startAddress, 1);
+                    return inputValues[0];
+
+                }
+                else
+                {
+                    throw new ArgumentException("Cannot Connect To The Device.");
+                }
+            }
+
+            bool GetCoilData(int startAddress)
+            {
+                if (_client.Connected)
+                {
+                    bool[] inputValues = _client.ReadCoils(startAddress, 1);
+                    return inputValues[0];
+
+                }
+                else
+                {
+                    throw new ArgumentException("Cannot Connect To The Device.");
+                }
+            }
+
+            bool GetDiscreteData(int startAddress)
+            {
+                if (_client.Connected)
+                {
+                    bool[] inputValues = _client.ReadDiscreteInputs(startAddress, 1);
+                    return inputValues[0];
+                }
+                else
+                {
+                    throw new ArgumentException("Cannot Connect To The Device.");
+                }
+            }
+
+
             while (true)
             {
                 using (var connectDb = new SQLiteConnection(sqllitedb_constr))
@@ -102,23 +144,102 @@ namespace deneme_tcp
                                 _client.Connect();
                                 if (_client.Connected)
                                 {
-                                    string tag_value = GetHoldingRegisterData(tagAddress).ToString();
-                                    Console.WriteLine(tag + " = " + tag_value + " ");
-
-                                    using (var connectDb = new SQLiteConnection(sqllitedb_constr))
+                                    if(rowTag[3].ToString() == "Measurement")
                                     {
-                                        using (var cmdDb = new SQLiteCommand($"UPDATE TAGS SET TAG_VALUE='{tag_value}' WHERE TAG_NAME = '{tag}'", connectDb))
+                                        if (rowTag[4].ToString() == "03 Read Holding Registers (4x)")
                                         {
-                                            try
-                                            {
-                                                cmdDb.Connection.Open();
-                                                cmdDb.ExecuteNonQuery();
+                                            string tag_value = GetHoldingRegisterData(tagAddress).ToString();
+                                            Console.WriteLine(tag + " = " + tag_value + " ");
 
+                                            using (var connectDb = new SQLiteConnection(sqllitedb_constr))
+                                            {
+                                                using (var cmdDb = new SQLiteCommand($"UPDATE TAGS SET TAG_VALUE='{tag_value}' WHERE TAG_NAME = '{tag}'", connectDb))
+                                                {
+                                                    try
+                                                    {
+                                                        cmdDb.Connection.Open();
+                                                        cmdDb.ExecuteNonQuery();
+
+                                                    }
+
+                                                    catch (Exception)
+                                                    {
+
+                                                    }
+                                                }
                                             }
+                                        }
+                                        else if (rowTag[4].ToString() == "04 Read Input Registers (3x)")
+                                        {
+                                            string tag_value = GetInputRegisterData(tagAddress).ToString();
+                                            Console.WriteLine(tag + " = " + tag_value + " ");
 
-                                            catch (Exception)
+                                            using (var connectDb = new SQLiteConnection(sqllitedb_constr))
                                             {
+                                                using (var cmdDb = new SQLiteCommand($"UPDATE TAGS SET TAG_VALUE='{tag_value}' WHERE TAG_NAME = '{tag}'", connectDb))
+                                                {
+                                                    try
+                                                    {
+                                                        cmdDb.Connection.Open();
+                                                        cmdDb.ExecuteNonQuery();
 
+                                                    }
+
+                                                    catch (Exception)
+                                                    {
+
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+
+                                    if (rowTag[3].ToString() == "Input")
+                                    {
+                                        if (rowTag[4].ToString() == "01 Read Coils (0x)")
+                                        {
+                                            string tag_value = GetCoilData(tagAddress).ToString();
+                                            Console.WriteLine(tag + " = " + tag_value + " ");
+
+                                            using (var connectDb = new SQLiteConnection(sqllitedb_constr))
+                                            {
+                                                using (var cmdDb = new SQLiteCommand($"UPDATE TAGS SET TAG_VALUE='{tag_value}' WHERE TAG_NAME = '{tag}'", connectDb))
+                                                {
+                                                    try
+                                                    {
+                                                        cmdDb.Connection.Open();
+                                                        cmdDb.ExecuteNonQuery();
+
+                                                    }
+
+                                                    catch (Exception)
+                                                    {
+
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else if (rowTag[4].ToString() == "02 Read Discrete Inputs (1x)")
+                                        {
+                                            string tag_value = GetDiscreteData(tagAddress).ToString();
+                                            Console.WriteLine(tag + " = " + tag_value + " ");
+
+                                            using (var connectDb = new SQLiteConnection(sqllitedb_constr))
+                                            {
+                                                using (var cmdDb = new SQLiteCommand($"UPDATE TAGS SET TAG_VALUE='{tag_value}' WHERE TAG_NAME = '{tag}'", connectDb))
+                                                {
+                                                    try
+                                                    {
+                                                        cmdDb.Connection.Open();
+                                                        cmdDb.ExecuteNonQuery();
+
+                                                    }
+
+                                                    catch (Exception)
+                                                    {
+
+                                                    }
+                                                }
                                             }
                                         }
                                     }
@@ -128,14 +249,10 @@ namespace deneme_tcp
                                 {
                                     _client.Disconnect();
                                 }
-                                //modbus_client = new TcpClient(ipAddress, port);
-
-
                             }
                             catch (Exception)
                             {
                                 break;
-                                Console.WriteLine(tag + " " + device + " " + ipAddress + " bağlanmadı");
                             }
                         }
 

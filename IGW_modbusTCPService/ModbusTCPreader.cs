@@ -12,6 +12,7 @@ using System.Threading.Tasks;
 using NModbus;
 using EasyModbus;
 using System.Data.SQLite;
+using System.Timers;
 
 namespace IGW_modbusTCPService
 {
@@ -20,33 +21,25 @@ namespace IGW_modbusTCPService
         string sqllitedb_constr = "Data source=C:\\KONTROLMATIK\\SystemFiles\\config.db; Version=3; default timeout=10000; Pooling=True; Max Pool Size=100";
         DataTable connTable = new DataTable();
         DataTable modbusTCPTagsTable = new DataTable();
-        UInt16[] reg_dat = new UInt16[2];
-        float Value_Holding;
-
-        TcpClient modbus_client;
         ModbusClient _client;
+        Timer _timer;
 
         public ModbusTCPreader()
         {
             InitializeComponent();
+            _timer = new Timer();
         }
 
         protected override void OnStart(string[] args)
         {
-            try
-            {
-                readData();
-            }
-            catch (Exception)
-            {
-
-
-            }
+            _timer.Interval = 1000;
+            _timer.Elapsed += _timer_Elapsed;
+            _timer.Start();
         }
 
-        protected override void OnStop()
-        {
-        }
+
+
+
         public float GetHoldingRegisterData(int startAddress)
         {
             if (_client.Connected)
@@ -63,7 +56,49 @@ namespace IGW_modbusTCPService
             }
         }
 
-        private void readData()
+
+        public int GetInputRegisterData(int startAddress)
+        {
+            if (_client.Connected)
+            {
+                int[] inputValues = _client.ReadInputRegisters(startAddress, 1);
+                return inputValues[0];
+
+            }
+            else
+            {
+                throw new ArgumentException("Cannot Connect To The Device.");
+            }
+        }
+
+        public bool GetCoilData(int startAddress)
+        {
+            if (_client.Connected)
+            {
+                bool[] inputValues = _client.ReadCoils(startAddress, 1);
+                return inputValues[0];
+
+            }
+            else
+            {
+                throw new ArgumentException("Cannot Connect To The Device.");
+            }
+        }
+
+        public bool GetDiscreteData(int startAddress)
+        {
+            if (_client.Connected)
+            {
+                bool[] inputValues = _client.ReadDiscreteInputs(startAddress, 1);
+                return inputValues[0];
+            }
+            else
+            {
+                throw new ArgumentException("Cannot Connect To The Device.");
+            }
+        }
+
+        private void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             using (var connectDb = new SQLiteConnection(sqllitedb_constr))
             {
@@ -123,25 +158,105 @@ namespace IGW_modbusTCPService
                             _client.Available(10);
                             _client.ConnectionTimeout = 300;
                             _client.Connect();
+                            DateTime tag_time = DateTime.Now;
                             if (_client.Connected)
                             {
-                                string tag_value = GetHoldingRegisterData(tagAddress).ToString();
-                                Console.WriteLine(tag + " = " + tag_value + " ");
-
-                                using (var connectDb = new SQLiteConnection(sqllitedb_constr))
+                                if (rowTag[3].ToString() == "Measurement")
                                 {
-                                    using (var cmdDb = new SQLiteCommand($"UPDATE TAGS SET TAG_VALUE='{tag_value}' WHERE TAG_NAME = '{tag}'", connectDb))
+                                    if (rowTag[4].ToString() == "03 Read Holding Registers (4x)")
                                     {
-                                        try
-                                        {
-                                            cmdDb.Connection.Open();
-                                            cmdDb.ExecuteNonQuery();
+                                        string tag_value = GetHoldingRegisterData(tagAddress).ToString();
+                                        Console.WriteLine(tag + " = " + tag_value + " ");
 
+                                        using (var connectDb = new SQLiteConnection(sqllitedb_constr))
+                                        {
+                                            using (var cmdDb = new SQLiteCommand($"UPDATE TAGS SET TAG_VALUE='{tag_value}', READ_TIME='{tag_time.ToString("dd/MM/yyyy HH:mm:ss")}' WHERE TAG_NAME = '{tag}'", connectDb))
+                                            {
+                                                try
+                                                {
+                                                    cmdDb.Connection.Open();
+                                                    cmdDb.ExecuteNonQuery();
+
+                                                }
+
+                                                catch (Exception)
+                                                {
+
+                                                }
+                                            }
                                         }
+                                    }
+                                    else if (rowTag[4].ToString() == "04 Read Input Registers (3x)")
+                                    {
+                                        string tag_value = GetInputRegisterData(tagAddress).ToString();
+                                        Console.WriteLine(tag + " = " + tag_value + " ");
 
-                                        catch (Exception)
+                                        using (var connectDb = new SQLiteConnection(sqllitedb_constr))
                                         {
+                                            using (var cmdDb = new SQLiteCommand($"UPDATE TAGS SET TAG_VALUE='{tag_value}', READ_TIME='{tag_time.ToString("dd/MM/yyyy HH:mm:ss")}' WHERE TAG_NAME = '{tag}'", connectDb))
+                                            {
+                                                try
+                                                {
+                                                    cmdDb.Connection.Open();
+                                                    cmdDb.ExecuteNonQuery();
 
+                                                }
+
+                                                catch (Exception)
+                                                {
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+
+                                if (rowTag[3].ToString() == "Input")
+                                {
+                                    if (rowTag[4].ToString() == "01 Read Coils (0x)")
+                                    {
+                                        string tag_value = GetCoilData(tagAddress).ToString();
+                                        Console.WriteLine(tag + " = " + tag_value + " ");
+
+                                        using (var connectDb = new SQLiteConnection(sqllitedb_constr))
+                                        {
+                                            using (var cmdDb = new SQLiteCommand($"UPDATE TAGS SET TAG_VALUE='{tag_value}', READ_TIME='{tag_time.ToString("dd/MM/yyyy HH:mm:ss")}' WHERE TAG_NAME = '{tag}'", connectDb))
+                                            {
+                                                try
+                                                {
+                                                    cmdDb.Connection.Open();
+                                                    cmdDb.ExecuteNonQuery();
+
+                                                }
+
+                                                catch (Exception)
+                                                {
+
+                                                }
+                                            }
+                                        }
+                                    }
+                                    else if (rowTag[4].ToString() == "02 Read Discrete Inputs (1x)")
+                                    {
+                                        string tag_value = GetDiscreteData(tagAddress).ToString();
+                                        Console.WriteLine(tag + " = " + tag_value + " ");
+
+                                        using (var connectDb = new SQLiteConnection(sqllitedb_constr))
+                                        {
+                                            using (var cmdDb = new SQLiteCommand($"UPDATE TAGS SET TAG_VALUE='{tag_value}', READ_TIME='{tag_time.ToString("dd/MM/yyyy HH:mm:ss")}' WHERE TAG_NAME = '{tag}'", connectDb))
+                                            {
+                                                try
+                                                {
+                                                    cmdDb.Connection.Open();
+                                                    cmdDb.ExecuteNonQuery();
+
+                                                }
+
+                                                catch (Exception)
+                                                {
+
+                                                }
+                                            }
                                         }
                                     }
                                 }
@@ -164,11 +279,14 @@ namespace IGW_modbusTCPService
 
                 }
             }
-
-
-
-
+        }
+        protected override void OnStop()
+        {
+            _timer.Stop();
+            _timer.Dispose();
         }
     } 
+
+
 }
 

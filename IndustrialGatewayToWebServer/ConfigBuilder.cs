@@ -10,6 +10,9 @@ using System.Windows.Forms;
 using System.Data.SQLite;
 using System.IO;
 using System.IO.Ports;
+using System.Diagnostics;
+using System.ServiceProcess;
+using System.Threading;
 
 
 namespace IndustrialGatewayToWebServer
@@ -45,7 +48,6 @@ namespace IndustrialGatewayToWebServer
         {
             InitializeComponent();
             findConnectedPorts();
-
         }
 
         DataTable dtReadTag = new DataTable();
@@ -92,6 +94,20 @@ namespace IndustrialGatewayToWebServer
             DataViewFillForMQTT($"SELECT * FROM MQTT");
             mqttDt.Columns[5].Visible = false;
             mqttDt.Columns[7].Visible = false;
+            backgroundWorker1.RunWorkerAsync();
+
+            try
+            {
+                serviceStatusControl("IGW_ModbusTCPService", ModbusTCPServiceStatus);
+                serviceStatusControl("IGW_MQTTService", MQTTserviceStatus);
+                //serviceStatusControl("IGW_ModbusRTUService", ModbusRTUServiceStatus);
+                //serviceStatusControl("IGW_SQLService", SQLserviceStatus);
+            }
+            catch (Exception)
+            {
+
+            }
+
 
         }
 
@@ -145,7 +161,7 @@ namespace IndustrialGatewayToWebServer
                                                                                 DISPLAY_MODE  TEXT NOT NULL,
                                                                                 TAG_ADDRESS TEXT NOT NULL,
                                                                                 TAG_VALUE  TEXT,
-                                                                                CONNECTION_STATUS  TEXT); ", connectDb))
+                                                                                READ_TIME  TEXT); ", connectDb))
                         cmdDb.ExecuteNonQuery();
 
 
@@ -1274,13 +1290,30 @@ namespace IndustrialGatewayToWebServer
         {
             if (tagTypeAdd.SelectedItem.ToString() == "Input")
             {
+                tagFunctionAdd.Items.Clear();
                 tagDisplayAdd.SelectedIndex = 0;
                 tagDisplayAdd.Enabled = false;
+                tagFunctionAdd.Items.Add("01 Read Coils (0x)");
+                tagFunctionAdd.Items.Add("02 Read Discrete Inputs (1x)");
             }
             else if (tagTypeAdd.SelectedItem.ToString() == "Output")
             {
+                tagFunctionAdd.Items.Clear();
                 tagDisplayAdd.SelectedIndex = 0;
                 tagDisplayAdd.Enabled = false;
+                tagFunctionAdd.Items.Add("05 Write Single Coil");
+                tagFunctionAdd.Items.Add("06 Write Single Register");
+                tagFunctionAdd.Items.Add("15 Write Multiple Coils");
+                tagFunctionAdd.Items.Add("16 Write Multiple Registers");
+            }
+            else if (tagTypeAdd.SelectedItem.ToString() == "Measurement")
+            {
+                tagFunctionAdd.Items.Clear();
+                tagDisplayAdd.SelectedIndex = 1;
+                tagDisplayAdd.Enabled = true;
+                tagFunctionAdd.Items.Add("03 Read Holding Registers (4x)");
+                tagFunctionAdd.Items.Add("04 Read Input Registers (3x)");
+
             }
             else
             {
@@ -1291,14 +1324,37 @@ namespace IndustrialGatewayToWebServer
 
         private void SelectTagType_SelectedIndexChanged(object sender, EventArgs e)
         {
-            if (SelectTagType.SelectedItem.ToString() == "Measurement")
+            if (SelectTagType.SelectedItem.ToString() == "Input")
             {
+                SelectFunction.Items.Clear();
+                SelectDisplayMode.SelectedIndex = 0;
+                SelectDisplayMode.Enabled = false;
+                SelectFunction.Items.Add("01 Read Coils (0x)");
+                SelectFunction.Items.Add("02 Read Discrete Inputs (1x)");
+            }
+            else if (SelectTagType.SelectedItem.ToString() == "Output")
+            {
+                SelectFunction.Items.Clear();
+                SelectDisplayMode.SelectedIndex = 0;
+                SelectDisplayMode.Enabled = false;
+                SelectFunction.Items.Add("05 Write Single Coil");
+                SelectFunction.Items.Add("06 Write Single Register");
+                SelectFunction.Items.Add("15 Write Multiple Coils");
+                SelectFunction.Items.Add("16 Write Multiple Registers");
+            }
+            else if (SelectTagType.SelectedItem.ToString() == "Measurement")
+            {
+                SelectFunction.Items.Clear();
+                SelectDisplayMode.SelectedIndex = 1;
                 SelectDisplayMode.Enabled = true;
+                SelectFunction.Items.Add("03 Read Holding Registers (4x)");
+                SelectFunction.Items.Add("04 Read Input Registers (3x)");
+
             }
             else
             {
-                SelectDisplayMode.SelectedIndex = 0;
-                SelectDisplayMode.Enabled = false;
+                SelectDisplayMode.SelectedIndex = 1;
+                SelectDisplayMode.Enabled = true;
             }
 
         }
@@ -1667,6 +1723,156 @@ namespace IndustrialGatewayToWebServer
         private void excelExportToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
+        }
+
+        private void setupServicesMenuButton_Click(object sender, EventArgs e)
+        {
+            string[] newPath = projectPath.Split('\\');
+            string newPathTemp = newPath[0];
+            for (int i = 1; i < newPath.Length - 3; i++)
+            {
+                newPathTemp = newPathTemp + "\\" + newPath[i];
+            }
+            string modbusPath = newPathTemp + "\\" + "IGW_modbusTCPService\\bin\\Debug\\IGW_modbusTCPService.exe";
+            string mqttPath = newPathTemp + "\\" + "IGW_mqttService\\bin\\Debug\\IGW_mqttService.exe";
+
+            Process.Start(@"C:\Windows\system32\sc.exe", "create IGW_MQTTService binPath="+mqttPath+" start= auto ");
+            Process.Start(@"C:\Windows\system32\sc.exe", "create IGW_ModbusTCPService binPath="+modbusPath+" start= auto");
+        }
+
+        private void ınfoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
+            string[] newPath = projectPath.Split('\\');
+            string newPathTemp = newPath[0];
+            for (int i = 1; i < newPath.Length-3; i++)
+            {
+                newPathTemp = newPathTemp +"\\"+ newPath[i];
+            }
+            string modbusPath = newPathTemp + "\\" + "IGW_modbusTCPService\\bin\\Debug\\IGW_modbusTCPService.exe";
+            string mqttPath = newPathTemp + "\\" + "IGW_mqttService\\bin\\Debug\\IGW_mqttService.exe";
+        }
+
+        public void serviceStatusControl(string ServiceName,Label statusLabel)
+        {
+            ServiceController serviceController = new ServiceController(ServiceName);
+            switch (serviceController.Status)
+            {
+                case ServiceControllerStatus.ContinuePending:
+                    statusLabel.Text = "Continue Pending";
+                    break;
+                case ServiceControllerStatus.Paused:
+                    statusLabel.Text = "Paused";
+                    break;
+                case ServiceControllerStatus.PausePending:
+                    statusLabel.Text = "Pause Pending";
+                    break;
+                case ServiceControllerStatus.Running:
+                    statusLabel.Text = "Running";
+                    statusLabel.BackColor = Color.LimeGreen ;
+                    break;
+                case ServiceControllerStatus.StartPending:
+                    statusLabel.Text = "Start Pending";
+                    break;
+                case ServiceControllerStatus.Stopped:
+                    statusLabel.Text="Stopped";
+                    statusLabel.BackColor = Color.Red;
+                    break;
+                case ServiceControllerStatus.StopPending:
+                    statusLabel.Text = "Stop Pending";
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        private void backgroundWorker1_DoWork(object sender, DoWorkEventArgs e)
+        {
+
+        }
+
+        private void serviceStatusRefresh_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                serviceStatusControl("IGW_ModbusTCPService", ModbusTCPServiceStatus);
+                serviceStatusControl("IGW_MQTTService", MQTTserviceStatus);
+
+                //serviceStatusControl("IGW_ModbusRTUService", ModbusRTUServiceStatus);
+                //serviceStatusControl("IGW_SQLService", SQLserviceStatus);
+            }
+            catch (Exception)
+            {
+
+            }
+            fillDeviceNameCombo();
+            DataViewFill($"SELECT * FROM COMMUNICATION ");
+            DataViewFillForTags($"SELECT * FROM TAGS");
+            DataViewFillForReadData($"SELECT * FROM TAGS");
+            DataViewFillForGroup($"SELECT * FROM TAG_GROUP");
+            DataViewFillForMQTT($"SELECT * FROM MQTT");
+            TreeViewFill();
+            MQTTTreeViewFill();
+
+
+        }
+
+        private void ServiceStartButton_Click(object sender, EventArgs e)
+        {
+            Process.Start(@"C:\Windows\system32\sc.exe", "start IGW_MQTTService");
+            Process.Start(@"C:\Windows\system32\sc.exe", "start IGW_ModbusTCPService");
+            Thread.Sleep(500);
+
+            try
+            {
+                serviceStatusControl("IGW_ModbusTCPService", ModbusTCPServiceStatus);
+                serviceStatusControl("IGW_MQTTService", MQTTserviceStatus);
+
+                //serviceStatusControl("IGW_ModbusRTUService", ModbusRTUServiceStatus);
+                //serviceStatusControl("IGW_SQLService", SQLserviceStatus);
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        private void ServiceStopButton_Click(object sender, EventArgs e)
+        {
+            Process.Start(@"C:\Windows\system32\sc.exe", "stop IGW_MQTTService");
+            Process.Start(@"C:\Windows\system32\sc.exe", "stop IGW_ModbusTCPService");
+            Thread.Sleep(500);
+            try
+            {
+                serviceStatusControl("IGW_ModbusTCPService", ModbusTCPServiceStatus);
+                serviceStatusControl("IGW_MQTTService", MQTTserviceStatus);
+
+                //serviceStatusControl("IGW_ModbusRTUService", ModbusRTUServiceStatus);
+                //serviceStatusControl("IGW_SQLService", SQLserviceStatus);
+            }
+            catch (Exception)
+            {
+
+            }
+        }
+
+        private void RestartServiceButton_Click(object sender, EventArgs e)
+        {
+            Process.Start(@"C:\Windows\system32\sc.exe", "restart IGW_MQTTService");
+            Process.Start(@"C:\Windows\system32\sc.exe", "restart IGW_ModbusTCPService");
+            Thread.Sleep(500);
+            try
+            {
+                serviceStatusControl("IGW_ModbusTCPService", ModbusTCPServiceStatus);
+                serviceStatusControl("IGW_MQTTService", MQTTserviceStatus);
+
+                //serviceStatusControl("IGW_ModbusRTUService", ModbusRTUServiceStatus);
+                //serviceStatusControl("IGW_SQLService", SQLserviceStatus);
+            }
+            catch (Exception)
+            {
+
+            }
         }
     }
 }

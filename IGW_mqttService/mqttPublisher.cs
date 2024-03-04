@@ -9,6 +9,7 @@ using System.ServiceProcess;
 using System.Text;
 using System.Threading.Tasks;
 using uPLibrary.Networking.M2Mqtt;
+using System.Timers;
 
 namespace IGW_mqttService
 {
@@ -19,61 +20,26 @@ namespace IGW_mqttService
         DataTable mqttTags = new DataTable();
         List<string> jsonList = new List<string>();
         MqttClient mqClient;
+        Timer _timer;
 
         public mqttPublisher()
         {
             InitializeComponent();
+            _timer = new Timer();
         }
 
         protected override void OnStart(string[] args)
         {
 
-            try
-            {
-                using (var connectDb = new SQLiteConnection(sqllitedb_constr))
-                {
-                    using (var adap = new SQLiteDataAdapter($"SELECT * FROM MQTT", connectDb))
-                    {
-                        try
-                        {
-                            connectDb.Open();
-                            adap.Fill(mqttDevice);
-
-                        }
-                        catch (Exception)
-                        {
-
-                        }
-                    }
-                }
-
-                using (var connectDb2 = new SQLiteConnection(sqllitedb_constr))
-                {
-                    using (var adap = new SQLiteDataAdapter($"SELECT * FROM TAGS", connectDb2))
-                    {
-                        try
-                        {
-                            connectDb2.Open();
-                            adap.Fill(mqttTags);
-                        }
-                        catch (Exception)
-                        {
-
-                        }
-                    }
-                }
-                sendData();
-
-            }
-            catch (Exception)
-            {
-
-            }
+            _timer.Interval = 1000;
+            _timer.Elapsed += _timer_Elapsed;
+            _timer.Start();
             
         }
 
-        private void sendData()
+        private void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
+
             while (true)
             {
                 using (var connectDb = new SQLiteConnection(sqllitedb_constr))
@@ -158,12 +124,16 @@ namespace IGW_mqttService
                 }
                 // Thread.Sleep(2000); 
                 mqttDevice.Clear();
+
             }
+
         }
     
 
         protected override void OnStop()
         {
+            _timer.Stop();
+            _timer.Dispose();
         }
     }
 }

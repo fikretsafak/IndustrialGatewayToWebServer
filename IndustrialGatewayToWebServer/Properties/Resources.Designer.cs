@@ -63,6 +63,76 @@ namespace IndustrialGatewayToWebServer.Properties {
         /// <summary>
         ///   System.Drawing.Bitmap türünde yerelleştirilmiş bir kaynak arar.
         /// </summary>
+        internal static System.Drawing.Bitmap Custom_Icon_Design_Flatastic_9_Start_48_1_ {
+            get {
+                object obj = ResourceManager.GetObject("Custom-Icon-Design-Flatastic-9-Start.48(1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap türünde yerelleştirilmiş bir kaynak arar.
+        /// </summary>
+        internal static System.Drawing.Bitmap Custom_Icon_Design_Flatastic_9_Stop_red_48 {
+            get {
+                object obj = ResourceManager.GetObject("Custom-Icon-Design-Flatastic-9-Stop-red.48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap türünde yerelleştirilmiş bir kaynak arar.
+        /// </summary>
+        internal static System.Drawing.Bitmap Dtafalonso_Modern_Xp_ModernXP_74_Software_Install_48 {
+            get {
+                object obj = ResourceManager.GetObject("Dtafalonso-Modern-Xp-ModernXP-74-Software-Install.48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap türünde yerelleştirilmiş bir kaynak arar.
+        /// </summary>
+        internal static System.Drawing.Bitmap Ekran_görüntüsü_2024_03_04_124534 {
+            get {
+                object obj = ResourceManager.GetObject("Ekran görüntüsü 2024-03-04 124534", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap türünde yerelleştirilmiş bir kaynak arar.
+        /// </summary>
+        internal static System.Drawing.Bitmap Ekran_görüntüsü_2024_03_04_1245341 {
+            get {
+                object obj = ResourceManager.GetObject("Ekran görüntüsü 2024-03-04 1245341", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap türünde yerelleştirilmiş bir kaynak arar.
+        /// </summary>
+        internal static System.Drawing.Bitmap Ekran_görüntüsü_2024_03_04_1245342 {
+            get {
+                object obj = ResourceManager.GetObject("Ekran görüntüsü 2024-03-04 1245342", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap türünde yerelleştirilmiş bir kaynak arar.
+        /// </summary>
+        internal static System.Drawing.Bitmap Graphicloads_Filetype_Excel_xls_48 {
+            get {
+                object obj = ResourceManager.GetObject("Graphicloads-Filetype-Excel-xls.48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap türünde yerelleştirilmiş bir kaynak arar.
+        /// </summary>
         internal static System.Drawing.Bitmap hub_128 {
             get {
                 object obj = ResourceManager.GetObject("hub_128", resourceCulture);
@@ -76,6 +146,16 @@ namespace IndustrialGatewayToWebServer.Properties {
         internal static System.Drawing.Bitmap icons8_add_trash_48 {
             get {
                 object obj = ResourceManager.GetObject("icons8-add-trash-48", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   System.Drawing.Bitmap türünde yerelleştirilmiş bir kaynak arar.
+        /// </summary>
+        internal static System.Drawing.Bitmap refr {
+            get {
+                object obj = ResourceManager.GetObject("refr", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

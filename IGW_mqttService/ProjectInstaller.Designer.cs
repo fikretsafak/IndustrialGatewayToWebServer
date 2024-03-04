@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.serviceProcessInstaller1.Account = System.ServiceProcess.ServiceAccount.LocalSystem;
             this.serviceProcessInstaller1 = new System.ServiceProcess.ServiceProcessInstaller();
             this.serviceInstaller1 = new System.ServiceProcess.ServiceInstaller();
             // 
@@ -39,7 +40,7 @@
             // serviceInstaller1
             // 
             this.serviceInstaller1.Description = "Industrial Gateway To Web Server F.S";
-            this.serviceInstaller1.DisplayName = "IGW mqtt services";
+            this.serviceInstaller1.DisplayName = "IGW_MQTTservice";
             this.serviceInstaller1.ServiceName = "Service1";
             this.serviceInstaller1.StartType = System.ServiceProcess.ServiceStartMode.Automatic;
             // 
