@@ -353,7 +353,7 @@ namespace IndustrialGatewayToWebServer
         private void mqttUpdateButton_Click(object sender, EventArgs e)
         {
             String SelectedCONN = connNameCombo.SelectedItem.ToString();
-
+            checkSameDeviceNameMQTT();
             using (var connectDb = new SQLiteConnection(sqllitedb_constr))
             {
 
@@ -367,20 +367,23 @@ namespace IndustrialGatewayToWebServer
                     DialogResult diar = MessageBox.Show("Are you sure update connection ?", "Update Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                     if (diar == DialogResult.Yes)
                     {
-                        using (var cmdDb = new SQLiteCommand($"UPDATE MQTT SET CONN_NAME='{mqttNameAdd.Text}', CLIENT_ID = '{mqttClientIDadd.Text}', HOST_ADDRESS = '{mqttHostAdd.Text}', HOST_PORT = '{mqttPortAdd.Text}', USERNAME = '{mqttUserNameAdd.Text}', PASSWORD = '{mqttPasswordAdd.Text}', TOPIC = '{mqttTopicAdd.Text}', TAGS = '{mqttTagNameString}' WHERE CONN_NAME = '{SelectedCONN}'", connectDb))
-                        {
-                            try
+
+                            using (var cmdDb = new SQLiteCommand($"UPDATE MQTT SET CONN_NAME='{mqttNameAdd.Text}', CLIENT_ID = '{mqttClientIDadd.Text}', HOST_ADDRESS = '{mqttHostAdd.Text}', HOST_PORT = '{mqttPortAdd.Text}', USERNAME = '{mqttUserNameAdd.Text}', PASSWORD = '{mqttPasswordAdd.Text}', TOPIC = '{mqttTopicAdd.Text}', TAGS = '{mqttTagNameString}' WHERE CONN_NAME = '{SelectedCONN}'", connectDb))
                             {
-                                cmdDb.Connection.Open();
-                                cmdDb.ExecuteNonQuery();
+                                try
+                                {
+                                    cmdDb.Connection.Open();
+                                    cmdDb.ExecuteNonQuery();
 
-                                MessageBox.Show("Device updated.");
-                                this.Close();
-                            }
+                                    MessageBox.Show("Device updated.");
 
-                            catch (Exception)
-                            {
+                                    this.Close();
+                                }
 
+                                catch (Exception)
+                                {
+
+                                }
                             }
                         }
 
@@ -390,4 +393,4 @@ namespace IndustrialGatewayToWebServer
             }
         }
     }
-}
+

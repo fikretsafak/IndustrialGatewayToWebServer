@@ -99,6 +99,7 @@ namespace IndustrialGatewayToWebServer
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label42 = new System.Windows.Forms.Label();
             this.tagGroupNameUpdate = new System.Windows.Forms.TextBox();
+            this.deleteTagButton = new System.Windows.Forms.Button();
             this.updateTagButton = new System.Windows.Forms.Button();
             this.SelectTagType = new System.Windows.Forms.ComboBox();
             this.label25 = new System.Windows.Forms.Label();
@@ -158,6 +159,10 @@ namespace IndustrialGatewayToWebServer
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
             this.MQTTsetTab = new System.Windows.Forms.TabPage();
+            this.label51 = new System.Windows.Forms.Label();
+            this.label50 = new System.Windows.Forms.Label();
+            this.mqttUpdateButton = new System.Windows.Forms.Button();
+            this.listBox1 = new System.Windows.Forms.ListBox();
             this.mqttTreeView = new System.Windows.Forms.TreeView();
             this.label48 = new System.Windows.Forms.Label();
             this.mqttTopicAdd = new System.Windows.Forms.TextBox();
@@ -181,30 +186,25 @@ namespace IndustrialGatewayToWebServer
             this.openFileDialog1 = new System.Windows.Forms.OpenFileDialog();
             this.label44 = new System.Windows.Forms.Label();
             this.label49 = new System.Windows.Forms.Label();
-            this.listBox1 = new System.Windows.Forms.ListBox();
-            this.mqttUpdateButton = new System.Windows.Forms.Button();
-            this.label50 = new System.Windows.Forms.Label();
-            this.label51 = new System.Windows.Forms.Label();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ınformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
+            this.setupServicesMenuButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.openConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.saveAsConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.excelExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tagExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.communicationDeviceExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sQLSettingsExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
-            this.openConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.saveAsConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ınformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.deleteTagButton = new System.Windows.Forms.Button();
             this.Services = new System.Windows.Forms.GroupBox();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
             this.label52 = new System.Windows.Forms.Label();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
             this.BuilderTab.SuspendLayout();
             this.CommSetTab.SuspendLayout();
             this.IEC104group.SuspendLayout();
@@ -987,6 +987,18 @@ namespace IndustrialGatewayToWebServer
             this.tagGroupNameUpdate.Size = new System.Drawing.Size(214, 20);
             this.tagGroupNameUpdate.TabIndex = 38;
             // 
+            // deleteTagButton
+            // 
+            this.deleteTagButton.Image = ((System.Drawing.Image)(resources.GetObject("deleteTagButton.Image")));
+            this.deleteTagButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.deleteTagButton.Location = new System.Drawing.Point(6, 321);
+            this.deleteTagButton.Name = "deleteTagButton";
+            this.deleteTagButton.Size = new System.Drawing.Size(208, 34);
+            this.deleteTagButton.TabIndex = 37;
+            this.deleteTagButton.Text = "Delete Tag";
+            this.deleteTagButton.UseVisualStyleBackColor = true;
+            this.deleteTagButton.Click += new System.EventHandler(this.deleteTagButton_Click);
+            // 
             // updateTagButton
             // 
             this.updateTagButton.Location = new System.Drawing.Point(6, 281);
@@ -1605,6 +1617,45 @@ namespace IndustrialGatewayToWebServer
             this.MQTTsetTab.Text = "MQTT Settings";
             this.MQTTsetTab.UseVisualStyleBackColor = true;
             // 
+            // label51
+            // 
+            this.label51.AutoSize = true;
+            this.label51.Location = new System.Drawing.Point(520, 7);
+            this.label51.Name = "label51";
+            this.label51.Size = new System.Drawing.Size(71, 13);
+            this.label51.TabIndex = 29;
+            this.label51.Text = "Selected Tag";
+            // 
+            // label50
+            // 
+            this.label50.AutoSize = true;
+            this.label50.Location = new System.Drawing.Point(344, 7);
+            this.label50.Name = "label50";
+            this.label50.Size = new System.Drawing.Size(59, 13);
+            this.label50.TabIndex = 28;
+            this.label50.Text = "Select Tag";
+            // 
+            // mqttUpdateButton
+            // 
+            this.mqttUpdateButton.Location = new System.Drawing.Point(186, 153);
+            this.mqttUpdateButton.Name = "mqttUpdateButton";
+            this.mqttUpdateButton.Size = new System.Drawing.Size(155, 34);
+            this.mqttUpdateButton.TabIndex = 27;
+            this.mqttUpdateButton.Text = "Update Connection";
+            this.mqttUpdateButton.UseVisualStyleBackColor = true;
+            this.mqttUpdateButton.Click += new System.EventHandler(this.mqttUpdateButton_Click);
+            // 
+            // listBox1
+            // 
+            this.listBox1.FormattingEnabled = true;
+            this.listBox1.Location = new System.Drawing.Point(523, 23);
+            this.listBox1.Name = "listBox1";
+            this.listBox1.ScrollAlwaysVisible = true;
+            this.listBox1.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.listBox1.Size = new System.Drawing.Size(267, 173);
+            this.listBox1.Sorted = true;
+            this.listBox1.TabIndex = 26;
+            // 
             // mqttTreeView
             // 
             this.mqttTreeView.CheckBoxes = true;
@@ -1781,45 +1832,6 @@ namespace IndustrialGatewayToWebServer
             this.label49.TabIndex = 15;
             this.label49.Text = "Server Address";
             // 
-            // listBox1
-            // 
-            this.listBox1.FormattingEnabled = true;
-            this.listBox1.Location = new System.Drawing.Point(523, 23);
-            this.listBox1.Name = "listBox1";
-            this.listBox1.ScrollAlwaysVisible = true;
-            this.listBox1.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.listBox1.Size = new System.Drawing.Size(267, 173);
-            this.listBox1.Sorted = true;
-            this.listBox1.TabIndex = 26;
-            // 
-            // mqttUpdateButton
-            // 
-            this.mqttUpdateButton.Location = new System.Drawing.Point(186, 153);
-            this.mqttUpdateButton.Name = "mqttUpdateButton";
-            this.mqttUpdateButton.Size = new System.Drawing.Size(155, 34);
-            this.mqttUpdateButton.TabIndex = 27;
-            this.mqttUpdateButton.Text = "Update Connection";
-            this.mqttUpdateButton.UseVisualStyleBackColor = true;
-            this.mqttUpdateButton.Click += new System.EventHandler(this.mqttUpdateButton_Click);
-            // 
-            // label50
-            // 
-            this.label50.AutoSize = true;
-            this.label50.Location = new System.Drawing.Point(344, 7);
-            this.label50.Name = "label50";
-            this.label50.Size = new System.Drawing.Size(59, 13);
-            this.label50.TabIndex = 28;
-            this.label50.Text = "Select Tag";
-            // 
-            // label51
-            // 
-            this.label51.AutoSize = true;
-            this.label51.Location = new System.Drawing.Point(520, 7);
-            this.label51.Name = "label51";
-            this.label51.Size = new System.Drawing.Size(71, 13);
-            this.label51.TabIndex = 29;
-            this.label51.Text = "Selected Tag";
-            // 
             // notifyIcon1
             // 
             this.notifyIcon1.Text = "notifyIcon1";
@@ -1837,19 +1849,41 @@ namespace IndustrialGatewayToWebServer
             this.menuStrip1.TabIndex = 17;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // helpToolStripMenuItem
+            // toolStripMenuItem2
             // 
-            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ınformationToolStripMenuItem});
-            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
-            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
-            this.helpToolStripMenuItem.Text = "Help";
+            this.toolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.setupServicesMenuButton,
+            this.openConfigToolStripMenuItem,
+            this.saveAsConfigToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.toolStripMenuItem2.Image = global::IndustrialGatewayToWebServer.Properties.Resources.hub_128;
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(71, 20);
+            this.toolStripMenuItem2.Text = "Config";
             // 
-            // ınformationToolStripMenuItem
+            // setupServicesMenuButton
             // 
-            this.ınformationToolStripMenuItem.Name = "ınformationToolStripMenuItem";
-            this.ınformationToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
-            this.ınformationToolStripMenuItem.Text = "Information";
+            this.setupServicesMenuButton.Name = "setupServicesMenuButton";
+            this.setupServicesMenuButton.Size = new System.Drawing.Size(180, 22);
+            this.setupServicesMenuButton.Text = "Setup Services";
+            // 
+            // openConfigToolStripMenuItem
+            // 
+            this.openConfigToolStripMenuItem.Name = "openConfigToolStripMenuItem";
+            this.openConfigToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.openConfigToolStripMenuItem.Text = "Open Config";
+            // 
+            // saveAsConfigToolStripMenuItem
+            // 
+            this.saveAsConfigToolStripMenuItem.Name = "saveAsConfigToolStripMenuItem";
+            this.saveAsConfigToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.saveAsConfigToolStripMenuItem.Text = "Save As Config";
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
             // 
             // exportToolStripMenuItem
             // 
@@ -1888,41 +1922,19 @@ namespace IndustrialGatewayToWebServer
             this.sQLSettingsExportToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
             this.sQLSettingsExportToolStripMenuItem.Text = "SQL Settings Export";
             // 
-            // toolStripMenuItem2
+            // helpToolStripMenuItem
             // 
-            this.toolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openConfigToolStripMenuItem,
-            this.saveConfigToolStripMenuItem,
-            this.saveAsConfigToolStripMenuItem,
-            this.exitToolStripMenuItem});
-            this.toolStripMenuItem2.Image = global::IndustrialGatewayToWebServer.Properties.Resources.hub_128;
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(71, 20);
-            this.toolStripMenuItem2.Text = "Config";
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ınformationToolStripMenuItem});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Text = "Help";
             // 
-            // openConfigToolStripMenuItem
+            // ınformationToolStripMenuItem
             // 
-            this.openConfigToolStripMenuItem.Name = "openConfigToolStripMenuItem";
-            this.openConfigToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.openConfigToolStripMenuItem.Text = "Open Config";
-            // 
-            // saveConfigToolStripMenuItem
-            // 
-            this.saveConfigToolStripMenuItem.Name = "saveConfigToolStripMenuItem";
-            this.saveConfigToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.saveConfigToolStripMenuItem.Text = "Save Config";
-            // 
-            // saveAsConfigToolStripMenuItem
-            // 
-            this.saveAsConfigToolStripMenuItem.Name = "saveAsConfigToolStripMenuItem";
-            this.saveAsConfigToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.saveAsConfigToolStripMenuItem.Text = "Save As Config";
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
+            this.ınformationToolStripMenuItem.Name = "ınformationToolStripMenuItem";
+            this.ınformationToolStripMenuItem.Size = new System.Drawing.Size(137, 22);
+            this.ınformationToolStripMenuItem.Text = "Information";
             // 
             // pictureBox1
             // 
@@ -1933,18 +1945,6 @@ namespace IndustrialGatewayToWebServer
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
-            // 
-            // deleteTagButton
-            // 
-            this.deleteTagButton.Image = ((System.Drawing.Image)(resources.GetObject("deleteTagButton.Image")));
-            this.deleteTagButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.deleteTagButton.Location = new System.Drawing.Point(6, 321);
-            this.deleteTagButton.Name = "deleteTagButton";
-            this.deleteTagButton.Size = new System.Drawing.Size(208, 34);
-            this.deleteTagButton.TabIndex = 37;
-            this.deleteTagButton.Text = "Delete Tag";
-            this.deleteTagButton.UseVisualStyleBackColor = true;
-            this.deleteTagButton.Click += new System.EventHandler(this.deleteTagButton_Click);
             // 
             // Services
             // 
@@ -1957,15 +1957,14 @@ namespace IndustrialGatewayToWebServer
             this.Services.TabIndex = 18;
             this.Services.TabStop = false;
             // 
-            // button3
+            // label52
             // 
-            this.button3.BackColor = System.Drawing.Color.Lime;
-            this.button3.Location = new System.Drawing.Point(6, 10);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(119, 23);
-            this.button3.TabIndex = 1;
-            this.button3.Text = "Start Services";
-            this.button3.UseVisualStyleBackColor = false;
+            this.label52.AutoSize = true;
+            this.label52.Location = new System.Drawing.Point(7, 38);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(82, 13);
+            this.label52.TabIndex = 3;
+            this.label52.Text = "Service Status :";
             // 
             // button1
             // 
@@ -1977,14 +1976,15 @@ namespace IndustrialGatewayToWebServer
             this.button1.Text = "Stop Services";
             this.button1.UseVisualStyleBackColor = false;
             // 
-            // label52
+            // button3
             // 
-            this.label52.AutoSize = true;
-            this.label52.Location = new System.Drawing.Point(7, 38);
-            this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(82, 13);
-            this.label52.TabIndex = 3;
-            this.label52.Text = "Service Status :";
+            this.button3.BackColor = System.Drawing.Color.Lime;
+            this.button3.Location = new System.Drawing.Point(6, 10);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(119, 23);
+            this.button3.TabIndex = 1;
+            this.button3.Text = "Start Services";
+            this.button3.UseVisualStyleBackColor = false;
             // 
             // ConfigBuilder
             // 
@@ -2210,7 +2210,6 @@ namespace IndustrialGatewayToWebServer
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem openConfigToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem saveConfigToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveAsConfigToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem exportToolStripMenuItem;
@@ -2224,6 +2223,7 @@ namespace IndustrialGatewayToWebServer
         private System.Windows.Forms.Label label52;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Button button3;
+        private System.Windows.Forms.ToolStripMenuItem setupServicesMenuButton;
     }
 }
 

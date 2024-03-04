@@ -863,6 +863,7 @@ namespace IndustrialGatewayToWebServer
             DataViewFillForTags($"SELECT * FROM TAGS");
             DataViewFillForReadData($"SELECT * FROM TAGS");
             DataViewFillForGroup($"SELECT * FROM TAG_GROUP");
+            DataViewFillForMQTT($"SELECT * FROM MQTT");
             TreeViewFill();
             MQTTTreeViewFill();
 
