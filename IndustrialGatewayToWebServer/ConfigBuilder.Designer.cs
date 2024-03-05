@@ -266,8 +266,8 @@ namespace IndustrialGatewayToWebServer
             // CommSetTab
             // 
             this.CommSetTab.Controls.Add(this.IEC104group);
-            this.CommSetTab.Controls.Add(this.ModbusRTUgroup);
             this.CommSetTab.Controls.Add(this.refreshButton);
+            this.CommSetTab.Controls.Add(this.ModbusRTUgroup);
             this.CommSetTab.Controls.Add(this.ModbusTCPgroup);
             this.CommSetTab.Controls.Add(this.label1);
             this.CommSetTab.Controls.Add(this.CommTypeCombo);
@@ -293,7 +293,7 @@ namespace IndustrialGatewayToWebServer
             this.IEC104group.Controls.Add(this.label12);
             this.IEC104group.Controls.Add(this.IPadressIEC);
             this.IEC104group.Controls.Add(this.IECaddButton);
-            this.IEC104group.Location = new System.Drawing.Point(16, 58);
+            this.IEC104group.Location = new System.Drawing.Point(15, 55);
             this.IEC104group.Name = "IEC104group";
             this.IEC104group.Size = new System.Drawing.Size(250, 310);
             this.IEC104group.TabIndex = 5;
@@ -410,9 +410,9 @@ namespace IndustrialGatewayToWebServer
             this.ModbusRTUgroup.Controls.Add(this.label2);
             this.ModbusRTUgroup.Controls.Add(this.COMPortRTU);
             this.ModbusRTUgroup.Controls.Add(this.ModbusRTUaddButton);
-            this.ModbusRTUgroup.Location = new System.Drawing.Point(16, 58);
+            this.ModbusRTUgroup.Location = new System.Drawing.Point(14, 59);
             this.ModbusRTUgroup.Name = "ModbusRTUgroup";
-            this.ModbusRTUgroup.Size = new System.Drawing.Size(250, 310);
+            this.ModbusRTUgroup.Size = new System.Drawing.Size(252, 306);
             this.ModbusRTUgroup.TabIndex = 4;
             this.ModbusRTUgroup.TabStop = false;
             this.ModbusRTUgroup.Text = "Modbus RTU Settings";
@@ -659,6 +659,11 @@ namespace IndustrialGatewayToWebServer
             // SlaveIDTCP
             // 
             this.SlaveIDTCP.Location = new System.Drawing.Point(98, 126);
+            this.SlaveIDTCP.Maximum = new decimal(new int[] {
+            256,
+            0,
+            0,
+            0});
             this.SlaveIDTCP.Name = "SlaveIDTCP";
             this.SlaveIDTCP.Size = new System.Drawing.Size(45, 20);
             this.SlaveIDTCP.TabIndex = 5;
@@ -2114,7 +2119,7 @@ namespace IndustrialGatewayToWebServer
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "ConfigBuilder";
-            this.Text = "Form1";
+            this.Text = "Industrial Gateway to Web Server";
             this.Load += new System.EventHandler(this.ConfigBuilder_Load);
             this.BuilderTab.ResumeLayout(false);
             this.CommSetTab.ResumeLayout(false);

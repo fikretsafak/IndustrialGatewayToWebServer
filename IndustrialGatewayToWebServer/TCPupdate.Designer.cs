@@ -101,6 +101,11 @@ namespace IndustrialGatewayToWebServer
             // SlaveIDTCP
             // 
             this.SlaveIDTCP.Location = new System.Drawing.Point(104, 149);
+            this.SlaveIDTCP.Maximum = new decimal(new int[] {
+            256,
+            0,
+            0,
+            0});
             this.SlaveIDTCP.Name = "SlaveIDTCP";
             this.SlaveIDTCP.Size = new System.Drawing.Size(45, 20);
             this.SlaveIDTCP.TabIndex = 31;

@@ -40,8 +40,6 @@ namespace IGW_mqttService
         private void _timer_Elapsed(object sender, ElapsedEventArgs e)
         {
 
-            while (true)
-            {
                 using (var connectDb = new SQLiteConnection(sqllitedb_constr))
                 {
                     using (var adap = new SQLiteDataAdapter($"SELECT * FROM MQTT", connectDb))
@@ -56,6 +54,7 @@ namespace IGW_mqttService
                         {
 
                         }
+                        connectDb.Close();
                     }
                 }
                 foreach (DataRow row in mqttDevice.Rows)
@@ -93,6 +92,7 @@ namespace IGW_mqttService
                             {
 
                             }
+                            connectDb2.Close();
                         }
                     }
                     string tagNamesTemp = row[7].ToString();
@@ -113,6 +113,7 @@ namespace IGW_mqttService
                             {
 
                             }
+
                         }
                     }
 
@@ -125,7 +126,7 @@ namespace IGW_mqttService
                 // Thread.Sleep(2000); 
                 mqttDevice.Clear();
 
-            }
+            
 
         }
     

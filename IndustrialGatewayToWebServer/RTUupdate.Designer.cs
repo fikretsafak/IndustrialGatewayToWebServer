@@ -109,6 +109,11 @@ namespace IndustrialGatewayToWebServer
             // SlaveIDRTU
             // 
             this.SlaveIDRTU.Location = new System.Drawing.Point(115, 97);
+            this.SlaveIDRTU.Maximum = new decimal(new int[] {
+            256,
+            0,
+            0,
+            0});
             this.SlaveIDRTU.Name = "SlaveIDRTU";
             this.SlaveIDRTU.Size = new System.Drawing.Size(45, 20);
             this.SlaveIDRTU.TabIndex = 60;

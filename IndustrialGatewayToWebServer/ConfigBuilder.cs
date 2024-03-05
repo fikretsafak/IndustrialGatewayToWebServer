@@ -1858,8 +1858,24 @@ namespace IndustrialGatewayToWebServer
 
         private void RestartServiceButton_Click(object sender, EventArgs e)
         {
-            Process.Start(@"C:\Windows\system32\sc.exe", "restart IGW_MQTTService");
-            Process.Start(@"C:\Windows\system32\sc.exe", "restart IGW_ModbusTCPService");
+            Process.Start(@"C:\Windows\system32\sc.exe", "stop IGW_MQTTService");
+            Process.Start(@"C:\Windows\system32\sc.exe", "stop IGW_ModbusTCPService");
+            Thread.Sleep(500);
+            try
+            {
+                serviceStatusControl("IGW_ModbusTCPService", ModbusTCPServiceStatus);
+                serviceStatusControl("IGW_MQTTService", MQTTserviceStatus);
+
+                //serviceStatusControl("IGW_ModbusRTUService", ModbusRTUServiceStatus);
+                //serviceStatusControl("IGW_SQLService", SQLserviceStatus);
+            }
+            catch (Exception)
+            {
+
+            }
+            Thread.Sleep(2000);
+            Process.Start(@"C:\Windows\system32\sc.exe", "start IGW_MQTTService");
+            Process.Start(@"C:\Windows\system32\sc.exe", "start IGW_ModbusTCPService");
             Thread.Sleep(500);
             try
             {
