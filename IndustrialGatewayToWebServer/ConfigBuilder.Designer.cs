@@ -45,6 +45,7 @@ namespace IndustrialGatewayToWebServer
             this.label12 = new System.Windows.Forms.Label();
             this.IPadressIEC = new System.Windows.Forms.TextBox();
             this.IECaddButton = new System.Windows.Forms.Button();
+            this.refreshButton = new System.Windows.Forms.Button();
             this.ModbusRTUgroup = new System.Windows.Forms.GroupBox();
             this.ModbusRTUupdateButton = new System.Windows.Forms.Button();
             this.label15 = new System.Windows.Forms.Label();
@@ -60,7 +61,6 @@ namespace IndustrialGatewayToWebServer
             this.label2 = new System.Windows.Forms.Label();
             this.COMPortRTU = new System.Windows.Forms.ComboBox();
             this.ModbusRTUaddButton = new System.Windows.Forms.Button();
-            this.refreshButton = new System.Windows.Forms.Button();
             this.ModbusTCPgroup = new System.Windows.Forms.GroupBox();
             this.label14 = new System.Windows.Forms.Label();
             this.deviceNameTCP = new System.Windows.Forms.TextBox();
@@ -99,6 +99,7 @@ namespace IndustrialGatewayToWebServer
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label42 = new System.Windows.Forms.Label();
             this.tagGroupNameUpdate = new System.Windows.Forms.TextBox();
+            this.deleteTagButton = new System.Windows.Forms.Button();
             this.updateTagButton = new System.Windows.Forms.Button();
             this.SelectTagType = new System.Windows.Forms.ComboBox();
             this.label25 = new System.Windows.Forms.Label();
@@ -152,8 +153,6 @@ namespace IndustrialGatewayToWebServer
             this.label37 = new System.Windows.Forms.Label();
             this.SQLiteTableName = new System.Windows.Forms.TextBox();
             this.SQLiteDt = new System.Windows.Forms.DataGridView();
-            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dataGridViewComboBoxColumn1 = new System.Windows.Forms.DataGridViewComboBoxColumn();
             this.label35 = new System.Windows.Forms.Label();
             this.tabPage3 = new System.Windows.Forms.TabPage();
             this.tabPage4 = new System.Windows.Forms.TabPage();
@@ -187,37 +186,42 @@ namespace IndustrialGatewayToWebServer
             this.label49 = new System.Windows.Forms.Label();
             this.notifyIcon1 = new System.Windows.Forms.NotifyIcon(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ınformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.Services = new System.Windows.Forms.GroupBox();
-            this.label52 = new System.Windows.Forms.Label();
-            this.serviceController1 = new System.ServiceProcess.ServiceController();
-            this.servicesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.label53 = new System.Windows.Forms.Label();
-            this.label54 = new System.Windows.Forms.Label();
-            this.label55 = new System.Windows.Forms.Label();
-            this.ModbusTCPServiceStatus = new System.Windows.Forms.Label();
-            this.MQTTserviceStatus = new System.Windows.Forms.Label();
-            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.openConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveAsConfigToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ModbusRTUServiceStatus = new System.Windows.Forms.Label();
-            this.SQLserviceStatus = new System.Windows.Forms.Label();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.serviceStatusRefresh = new System.Windows.Forms.Button();
+            this.servicesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ServiceStartButton = new System.Windows.Forms.ToolStripMenuItem();
             this.ServiceStopButton = new System.Windows.Forms.ToolStripMenuItem();
             this.RestartServiceButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.setupServicesMenuButton = new System.Windows.Forms.ToolStripMenuItem();
+            this.exportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.excelExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tagExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.communicationDeviceExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.sQLSettingsExportToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.ınformationToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.Services = new System.Windows.Forms.GroupBox();
+            this.SQLserviceStatus = new System.Windows.Forms.Label();
+            this.ModbusRTUServiceStatus = new System.Windows.Forms.Label();
+            this.MQTTserviceStatus = new System.Windows.Forms.Label();
+            this.serviceStatusRefresh = new System.Windows.Forms.Button();
+            this.ModbusTCPServiceStatus = new System.Windows.Forms.Label();
+            this.label55 = new System.Windows.Forms.Label();
+            this.label54 = new System.Windows.Forms.Label();
+            this.label53 = new System.Windows.Forms.Label();
+            this.label52 = new System.Windows.Forms.Label();
+            this.serviceController1 = new System.ServiceProcess.ServiceController();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.deleteTagButton = new System.Windows.Forms.Button();
+            this.serviceController2 = new System.ServiceProcess.ServiceController();
+            this.dataGridViewTextBoxColumn1 = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.TagNameDtSqlite = new System.Windows.Forms.DataGridViewComboBoxColumn();
+            this.label56 = new System.Windows.Forms.Label();
+            this.sqliteRecordInterval = new System.Windows.Forms.NumericUpDown();
+            this.label57 = new System.Windows.Forms.Label();
             this.BuilderTab.SuspendLayout();
             this.CommSetTab.SuspendLayout();
             this.IEC104group.SuspendLayout();
@@ -247,6 +251,7 @@ namespace IndustrialGatewayToWebServer
             this.menuStrip1.SuspendLayout();
             this.Services.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sqliteRecordInterval)).BeginInit();
             this.SuspendLayout();
             // 
             // BuilderTab
@@ -393,6 +398,17 @@ namespace IndustrialGatewayToWebServer
             this.IECaddButton.TabIndex = 0;
             this.IECaddButton.Text = "Add Connection";
             this.IECaddButton.UseVisualStyleBackColor = true;
+            // 
+            // refreshButton
+            // 
+            this.refreshButton.Location = new System.Drawing.Point(207, 7);
+            this.refreshButton.Name = "refreshButton";
+            this.refreshButton.Size = new System.Drawing.Size(58, 22);
+            this.refreshButton.TabIndex = 29;
+            this.refreshButton.Text = "Refresh";
+            this.refreshButton.UseVisualStyleBackColor = true;
+            this.refreshButton.Visible = false;
+            this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
             // 
             // ModbusRTUgroup
             // 
@@ -563,17 +579,6 @@ namespace IndustrialGatewayToWebServer
             this.ModbusRTUaddButton.Text = "Add Connection";
             this.ModbusRTUaddButton.UseVisualStyleBackColor = true;
             this.ModbusRTUaddButton.Click += new System.EventHandler(this.ModbusRTUaddButton_Click);
-            // 
-            // refreshButton
-            // 
-            this.refreshButton.Location = new System.Drawing.Point(207, 7);
-            this.refreshButton.Name = "refreshButton";
-            this.refreshButton.Size = new System.Drawing.Size(58, 22);
-            this.refreshButton.TabIndex = 29;
-            this.refreshButton.Text = "Refresh";
-            this.refreshButton.UseVisualStyleBackColor = true;
-            this.refreshButton.Visible = false;
-            this.refreshButton.Click += new System.EventHandler(this.refreshButton_Click);
             // 
             // ModbusTCPgroup
             // 
@@ -998,6 +1003,18 @@ namespace IndustrialGatewayToWebServer
             this.tagGroupNameUpdate.Size = new System.Drawing.Size(214, 20);
             this.tagGroupNameUpdate.TabIndex = 38;
             // 
+            // deleteTagButton
+            // 
+            this.deleteTagButton.Image = ((System.Drawing.Image)(resources.GetObject("deleteTagButton.Image")));
+            this.deleteTagButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.deleteTagButton.Location = new System.Drawing.Point(6, 321);
+            this.deleteTagButton.Name = "deleteTagButton";
+            this.deleteTagButton.Size = new System.Drawing.Size(208, 34);
+            this.deleteTagButton.TabIndex = 37;
+            this.deleteTagButton.Text = "Delete Tag";
+            this.deleteTagButton.UseVisualStyleBackColor = true;
+            this.deleteTagButton.Click += new System.EventHandler(this.deleteTagButton_Click);
+            // 
             // updateTagButton
             // 
             this.updateTagButton.Location = new System.Drawing.Point(6, 281);
@@ -1404,6 +1421,9 @@ namespace IndustrialGatewayToWebServer
             // 
             // tabPage2
             // 
+            this.tabPage2.Controls.Add(this.label57);
+            this.tabPage2.Controls.Add(this.sqliteRecordInterval);
+            this.tabPage2.Controls.Add(this.label56);
             this.tabPage2.Controls.Add(this.SQLiteEnableCB);
             this.tabPage2.Controls.Add(this.label40);
             this.tabPage2.Controls.Add(this.currentSQLiteString);
@@ -1461,7 +1481,7 @@ namespace IndustrialGatewayToWebServer
             this.SQLiteAddConnectString.Name = "SQLiteAddConnectString";
             this.SQLiteAddConnectString.Size = new System.Drawing.Size(171, 23);
             this.SQLiteAddConnectString.TabIndex = 22;
-            this.SQLiteAddConnectString.Text = "Add Connection String";
+            this.SQLiteAddConnectString.Text = "Select Database";
             this.SQLiteAddConnectString.UseVisualStyleBackColor = true;
             this.SQLiteAddConnectString.Click += new System.EventHandler(this.SQLiteAddConnectString_Click);
             // 
@@ -1516,8 +1536,9 @@ namespace IndustrialGatewayToWebServer
             this.SQLiteAddTableButton.Name = "SQLiteAddTableButton";
             this.SQLiteAddTableButton.Size = new System.Drawing.Size(335, 23);
             this.SQLiteAddTableButton.TabIndex = 16;
-            this.SQLiteAddTableButton.Text = "Add Table Create String";
+            this.SQLiteAddTableButton.Text = "Create Table";
             this.SQLiteAddTableButton.UseVisualStyleBackColor = true;
+            this.SQLiteAddTableButton.Click += new System.EventHandler(this.SQLiteAddTableButton_Click);
             // 
             // label37
             // 
@@ -1532,7 +1553,7 @@ namespace IndustrialGatewayToWebServer
             // 
             this.SQLiteTableName.Location = new System.Drawing.Point(510, 8);
             this.SQLiteTableName.Name = "SQLiteTableName";
-            this.SQLiteTableName.Size = new System.Drawing.Size(267, 20);
+            this.SQLiteTableName.Size = new System.Drawing.Size(138, 20);
             this.SQLiteTableName.TabIndex = 14;
             // 
             // SQLiteDt
@@ -1541,23 +1562,11 @@ namespace IndustrialGatewayToWebServer
             this.SQLiteDt.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.SQLiteDt.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.dataGridViewTextBoxColumn1,
-            this.dataGridViewComboBoxColumn1});
+            this.TagNameDtSqlite});
             this.SQLiteDt.Location = new System.Drawing.Point(442, 30);
             this.SQLiteDt.Name = "SQLiteDt";
             this.SQLiteDt.Size = new System.Drawing.Size(335, 268);
             this.SQLiteDt.TabIndex = 13;
-            // 
-            // dataGridViewTextBoxColumn1
-            // 
-            this.dataGridViewTextBoxColumn1.HeaderText = "Column Name";
-            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
-            // 
-            // dataGridViewComboBoxColumn1
-            // 
-            this.dataGridViewComboBoxColumn1.HeaderText = "Tag Name";
-            this.dataGridViewComboBoxColumn1.Name = "dataGridViewComboBoxColumn1";
-            this.dataGridViewComboBoxColumn1.Resizable = System.Windows.Forms.DataGridViewTriState.True;
-            this.dataGridViewComboBoxColumn1.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
             // 
             // label35
             // 
@@ -1849,6 +1858,82 @@ namespace IndustrialGatewayToWebServer
             this.menuStrip1.TabIndex = 17;
             this.menuStrip1.Text = "menuStrip1";
             // 
+            // toolStripMenuItem2
+            // 
+            this.toolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openConfigToolStripMenuItem,
+            this.saveAsConfigToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
+            this.toolStripMenuItem2.Size = new System.Drawing.Size(55, 20);
+            this.toolStripMenuItem2.Text = "Config";
+            // 
+            // openConfigToolStripMenuItem
+            // 
+            this.openConfigToolStripMenuItem.Name = "openConfigToolStripMenuItem";
+            this.openConfigToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.openConfigToolStripMenuItem.Text = "Open Config";
+            // 
+            // saveAsConfigToolStripMenuItem
+            // 
+            this.saveAsConfigToolStripMenuItem.Name = "saveAsConfigToolStripMenuItem";
+            this.saveAsConfigToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.saveAsConfigToolStripMenuItem.Text = "Save As Config";
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
+            this.exitToolStripMenuItem.Text = "Exit";
+            // 
+            // servicesToolStripMenuItem
+            // 
+            this.servicesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ServiceStartButton,
+            this.ServiceStopButton,
+            this.RestartServiceButton,
+            this.toolStripSeparator1,
+            this.setupServicesMenuButton});
+            this.servicesToolStripMenuItem.Name = "servicesToolStripMenuItem";
+            this.servicesToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
+            this.servicesToolStripMenuItem.Text = "Services";
+            // 
+            // ServiceStartButton
+            // 
+            this.ServiceStartButton.Image = global::IndustrialGatewayToWebServer.Properties.Resources.Custom_Icon_Design_Flatastic_9_Start_48_1_;
+            this.ServiceStartButton.Name = "ServiceStartButton";
+            this.ServiceStartButton.Size = new System.Drawing.Size(150, 22);
+            this.ServiceStartButton.Text = "Start Service";
+            this.ServiceStartButton.Click += new System.EventHandler(this.ServiceStartButton_Click);
+            // 
+            // ServiceStopButton
+            // 
+            this.ServiceStopButton.Image = global::IndustrialGatewayToWebServer.Properties.Resources.Custom_Icon_Design_Flatastic_9_Stop_red_48;
+            this.ServiceStopButton.Name = "ServiceStopButton";
+            this.ServiceStopButton.Size = new System.Drawing.Size(150, 22);
+            this.ServiceStopButton.Text = "Stop Service";
+            this.ServiceStopButton.Click += new System.EventHandler(this.ServiceStopButton_Click);
+            // 
+            // RestartServiceButton
+            // 
+            this.RestartServiceButton.Image = global::IndustrialGatewayToWebServer.Properties.Resources.Ekran_görüntüsü_2024_03_04_1245342;
+            this.RestartServiceButton.Name = "RestartServiceButton";
+            this.RestartServiceButton.Size = new System.Drawing.Size(150, 22);
+            this.RestartServiceButton.Text = "Restart Service";
+            this.RestartServiceButton.Click += new System.EventHandler(this.RestartServiceButton_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(147, 6);
+            // 
+            // setupServicesMenuButton
+            // 
+            this.setupServicesMenuButton.Image = global::IndustrialGatewayToWebServer.Properties.Resources.Dtafalonso_Modern_Xp_ModernXP_74_Software_Install_48;
+            this.setupServicesMenuButton.Name = "setupServicesMenuButton";
+            this.setupServicesMenuButton.Size = new System.Drawing.Size(150, 22);
+            this.setupServicesMenuButton.Text = "Setup Service";
+            // 
             // exportToolStripMenuItem
             // 
             this.exportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -1856,6 +1941,36 @@ namespace IndustrialGatewayToWebServer
             this.exportToolStripMenuItem.Name = "exportToolStripMenuItem";
             this.exportToolStripMenuItem.Size = new System.Drawing.Size(53, 20);
             this.exportToolStripMenuItem.Text = "Export";
+            // 
+            // excelExportToolStripMenuItem
+            // 
+            this.excelExportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.tagExportToolStripMenuItem,
+            this.communicationDeviceExportToolStripMenuItem,
+            this.sQLSettingsExportToolStripMenuItem});
+            this.excelExportToolStripMenuItem.Image = global::IndustrialGatewayToWebServer.Properties.Resources.Graphicloads_Filetype_Excel_xls_48;
+            this.excelExportToolStripMenuItem.Name = "excelExportToolStripMenuItem";
+            this.excelExportToolStripMenuItem.Size = new System.Drawing.Size(138, 22);
+            this.excelExportToolStripMenuItem.Text = "Excel Export";
+            this.excelExportToolStripMenuItem.Click += new System.EventHandler(this.excelExportToolStripMenuItem_Click);
+            // 
+            // tagExportToolStripMenuItem
+            // 
+            this.tagExportToolStripMenuItem.Name = "tagExportToolStripMenuItem";
+            this.tagExportToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
+            this.tagExportToolStripMenuItem.Text = "Tag Export";
+            // 
+            // communicationDeviceExportToolStripMenuItem
+            // 
+            this.communicationDeviceExportToolStripMenuItem.Name = "communicationDeviceExportToolStripMenuItem";
+            this.communicationDeviceExportToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
+            this.communicationDeviceExportToolStripMenuItem.Text = "Communication Device Export";
+            // 
+            // sQLSettingsExportToolStripMenuItem
+            // 
+            this.sQLSettingsExportToolStripMenuItem.Name = "sQLSettingsExportToolStripMenuItem";
+            this.sQLSettingsExportToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
+            this.sQLSettingsExportToolStripMenuItem.Text = "SQL Settings Export";
             // 
             // helpToolStripMenuItem
             // 
@@ -1889,103 +2004,14 @@ namespace IndustrialGatewayToWebServer
             this.Services.TabStop = false;
             this.Services.Text = "Service Status";
             // 
-            // label52
+            // SQLserviceStatus
             // 
-            this.label52.AutoSize = true;
-            this.label52.Location = new System.Drawing.Point(6, 16);
-            this.label52.Name = "label52";
-            this.label52.Size = new System.Drawing.Size(120, 13);
-            this.label52.TabIndex = 3;
-            this.label52.Text = "Modbus TCP Service...:";
-            // 
-            // servicesToolStripMenuItem
-            // 
-            this.servicesToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ServiceStartButton,
-            this.ServiceStopButton,
-            this.RestartServiceButton,
-            this.toolStripSeparator1,
-            this.setupServicesMenuButton});
-            this.servicesToolStripMenuItem.Name = "servicesToolStripMenuItem";
-            this.servicesToolStripMenuItem.Size = new System.Drawing.Size(61, 20);
-            this.servicesToolStripMenuItem.Text = "Services";
-            // 
-            // label53
-            // 
-            this.label53.AutoSize = true;
-            this.label53.Location = new System.Drawing.Point(6, 50);
-            this.label53.Name = "label53";
-            this.label53.Size = new System.Drawing.Size(119, 13);
-            this.label53.TabIndex = 4;
-            this.label53.Text = "MQTT Service.............:";
-            // 
-            // label54
-            // 
-            this.label54.AutoSize = true;
-            this.label54.Location = new System.Drawing.Point(6, 33);
-            this.label54.Name = "label54";
-            this.label54.Size = new System.Drawing.Size(119, 13);
-            this.label54.TabIndex = 5;
-            this.label54.Text = "Modbus RTU Service..:";
-            // 
-            // label55
-            // 
-            this.label55.AutoSize = true;
-            this.label55.Location = new System.Drawing.Point(6, 67);
-            this.label55.Name = "label55";
-            this.label55.Size = new System.Drawing.Size(118, 13);
-            this.label55.TabIndex = 6;
-            this.label55.Text = "SQL Service................:";
-            // 
-            // ModbusTCPServiceStatus
-            // 
-            this.ModbusTCPServiceStatus.AutoSize = true;
-            this.ModbusTCPServiceStatus.Location = new System.Drawing.Point(123, 16);
-            this.ModbusTCPServiceStatus.Name = "ModbusTCPServiceStatus";
-            this.ModbusTCPServiceStatus.Size = new System.Drawing.Size(35, 13);
-            this.ModbusTCPServiceStatus.TabIndex = 7;
-            this.ModbusTCPServiceStatus.Text = "status";
-            // 
-            // MQTTserviceStatus
-            // 
-            this.MQTTserviceStatus.AutoSize = true;
-            this.MQTTserviceStatus.Location = new System.Drawing.Point(123, 50);
-            this.MQTTserviceStatus.Name = "MQTTserviceStatus";
-            this.MQTTserviceStatus.Size = new System.Drawing.Size(35, 13);
-            this.MQTTserviceStatus.TabIndex = 8;
-            this.MQTTserviceStatus.Text = "status";
-            // 
-            // backgroundWorker1
-            // 
-            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
-            // 
-            // toolStripMenuItem2
-            // 
-            this.toolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.openConfigToolStripMenuItem,
-            this.saveAsConfigToolStripMenuItem,
-            this.exitToolStripMenuItem});
-            this.toolStripMenuItem2.Name = "toolStripMenuItem2";
-            this.toolStripMenuItem2.Size = new System.Drawing.Size(55, 20);
-            this.toolStripMenuItem2.Text = "Config";
-            // 
-            // openConfigToolStripMenuItem
-            // 
-            this.openConfigToolStripMenuItem.Name = "openConfigToolStripMenuItem";
-            this.openConfigToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
-            this.openConfigToolStripMenuItem.Text = "Open Config";
-            // 
-            // saveAsConfigToolStripMenuItem
-            // 
-            this.saveAsConfigToolStripMenuItem.Name = "saveAsConfigToolStripMenuItem";
-            this.saveAsConfigToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
-            this.saveAsConfigToolStripMenuItem.Text = "Save As Config";
-            // 
-            // exitToolStripMenuItem
-            // 
-            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
-            this.exitToolStripMenuItem.Size = new System.Drawing.Size(153, 22);
-            this.exitToolStripMenuItem.Text = "Exit";
+            this.SQLserviceStatus.AutoSize = true;
+            this.SQLserviceStatus.Location = new System.Drawing.Point(123, 67);
+            this.SQLserviceStatus.Name = "SQLserviceStatus";
+            this.SQLserviceStatus.Size = new System.Drawing.Size(35, 13);
+            this.SQLserviceStatus.TabIndex = 35;
+            this.SQLserviceStatus.Text = "status";
             // 
             // ModbusRTUServiceStatus
             // 
@@ -1996,19 +2022,14 @@ namespace IndustrialGatewayToWebServer
             this.ModbusRTUServiceStatus.TabIndex = 34;
             this.ModbusRTUServiceStatus.Text = "status";
             // 
-            // SQLserviceStatus
+            // MQTTserviceStatus
             // 
-            this.SQLserviceStatus.AutoSize = true;
-            this.SQLserviceStatus.Location = new System.Drawing.Point(123, 67);
-            this.SQLserviceStatus.Name = "SQLserviceStatus";
-            this.SQLserviceStatus.Size = new System.Drawing.Size(35, 13);
-            this.SQLserviceStatus.TabIndex = 35;
-            this.SQLserviceStatus.Text = "status";
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(147, 6);
+            this.MQTTserviceStatus.AutoSize = true;
+            this.MQTTserviceStatus.Location = new System.Drawing.Point(123, 50);
+            this.MQTTserviceStatus.Name = "MQTTserviceStatus";
+            this.MQTTserviceStatus.Size = new System.Drawing.Size(35, 13);
+            this.MQTTserviceStatus.TabIndex = 8;
+            this.MQTTserviceStatus.Text = "status";
             // 
             // serviceStatusRefresh
             // 
@@ -2021,66 +2042,54 @@ namespace IndustrialGatewayToWebServer
             this.serviceStatusRefresh.UseVisualStyleBackColor = true;
             this.serviceStatusRefresh.Click += new System.EventHandler(this.serviceStatusRefresh_Click);
             // 
-            // ServiceStartButton
+            // ModbusTCPServiceStatus
             // 
-            this.ServiceStartButton.Image = global::IndustrialGatewayToWebServer.Properties.Resources.Custom_Icon_Design_Flatastic_9_Start_48_1_;
-            this.ServiceStartButton.Name = "ServiceStartButton";
-            this.ServiceStartButton.Size = new System.Drawing.Size(150, 22);
-            this.ServiceStartButton.Text = "Start Service";
-            this.ServiceStartButton.Click += new System.EventHandler(this.ServiceStartButton_Click);
+            this.ModbusTCPServiceStatus.AutoSize = true;
+            this.ModbusTCPServiceStatus.Location = new System.Drawing.Point(123, 16);
+            this.ModbusTCPServiceStatus.Name = "ModbusTCPServiceStatus";
+            this.ModbusTCPServiceStatus.Size = new System.Drawing.Size(35, 13);
+            this.ModbusTCPServiceStatus.TabIndex = 7;
+            this.ModbusTCPServiceStatus.Text = "status";
             // 
-            // ServiceStopButton
+            // label55
             // 
-            this.ServiceStopButton.Image = global::IndustrialGatewayToWebServer.Properties.Resources.Custom_Icon_Design_Flatastic_9_Stop_red_48;
-            this.ServiceStopButton.Name = "ServiceStopButton";
-            this.ServiceStopButton.Size = new System.Drawing.Size(150, 22);
-            this.ServiceStopButton.Text = "Stop Service";
-            this.ServiceStopButton.Click += new System.EventHandler(this.ServiceStopButton_Click);
+            this.label55.AutoSize = true;
+            this.label55.Location = new System.Drawing.Point(6, 67);
+            this.label55.Name = "label55";
+            this.label55.Size = new System.Drawing.Size(118, 13);
+            this.label55.TabIndex = 6;
+            this.label55.Text = "SQL Service................:";
             // 
-            // RestartServiceButton
+            // label54
             // 
-            this.RestartServiceButton.Image = global::IndustrialGatewayToWebServer.Properties.Resources.Ekran_görüntüsü_2024_03_04_1245342;
-            this.RestartServiceButton.Name = "RestartServiceButton";
-            this.RestartServiceButton.Size = new System.Drawing.Size(150, 22);
-            this.RestartServiceButton.Text = "Restart Service";
-            this.RestartServiceButton.Click += new System.EventHandler(this.RestartServiceButton_Click);
+            this.label54.AutoSize = true;
+            this.label54.Location = new System.Drawing.Point(6, 33);
+            this.label54.Name = "label54";
+            this.label54.Size = new System.Drawing.Size(119, 13);
+            this.label54.TabIndex = 5;
+            this.label54.Text = "Modbus RTU Service..:";
             // 
-            // setupServicesMenuButton
+            // label53
             // 
-            this.setupServicesMenuButton.Image = global::IndustrialGatewayToWebServer.Properties.Resources.Dtafalonso_Modern_Xp_ModernXP_74_Software_Install_48;
-            this.setupServicesMenuButton.Name = "setupServicesMenuButton";
-            this.setupServicesMenuButton.Size = new System.Drawing.Size(150, 22);
-            this.setupServicesMenuButton.Text = "Setup Service";
+            this.label53.AutoSize = true;
+            this.label53.Location = new System.Drawing.Point(6, 50);
+            this.label53.Name = "label53";
+            this.label53.Size = new System.Drawing.Size(119, 13);
+            this.label53.TabIndex = 4;
+            this.label53.Text = "MQTT Service.............:";
             // 
-            // excelExportToolStripMenuItem
+            // label52
             // 
-            this.excelExportToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tagExportToolStripMenuItem,
-            this.communicationDeviceExportToolStripMenuItem,
-            this.sQLSettingsExportToolStripMenuItem});
-            this.excelExportToolStripMenuItem.Image = global::IndustrialGatewayToWebServer.Properties.Resources.Graphicloads_Filetype_Excel_xls_48;
-            this.excelExportToolStripMenuItem.Name = "excelExportToolStripMenuItem";
-            this.excelExportToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.excelExportToolStripMenuItem.Text = "Excel Export";
-            this.excelExportToolStripMenuItem.Click += new System.EventHandler(this.excelExportToolStripMenuItem_Click);
+            this.label52.AutoSize = true;
+            this.label52.Location = new System.Drawing.Point(6, 16);
+            this.label52.Name = "label52";
+            this.label52.Size = new System.Drawing.Size(120, 13);
+            this.label52.TabIndex = 3;
+            this.label52.Text = "Modbus TCP Service...:";
             // 
-            // tagExportToolStripMenuItem
+            // backgroundWorker1
             // 
-            this.tagExportToolStripMenuItem.Name = "tagExportToolStripMenuItem";
-            this.tagExportToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.tagExportToolStripMenuItem.Text = "Tag Export";
-            // 
-            // communicationDeviceExportToolStripMenuItem
-            // 
-            this.communicationDeviceExportToolStripMenuItem.Name = "communicationDeviceExportToolStripMenuItem";
-            this.communicationDeviceExportToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.communicationDeviceExportToolStripMenuItem.Text = "Communication Device Export";
-            // 
-            // sQLSettingsExportToolStripMenuItem
-            // 
-            this.sQLSettingsExportToolStripMenuItem.Name = "sQLSettingsExportToolStripMenuItem";
-            this.sQLSettingsExportToolStripMenuItem.Size = new System.Drawing.Size(236, 22);
-            this.sQLSettingsExportToolStripMenuItem.Text = "SQL Settings Export";
+            this.backgroundWorker1.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker1_DoWork);
             // 
             // pictureBox1
             // 
@@ -2092,17 +2101,42 @@ namespace IndustrialGatewayToWebServer
             this.pictureBox1.TabIndex = 2;
             this.pictureBox1.TabStop = false;
             // 
-            // deleteTagButton
+            // dataGridViewTextBoxColumn1
             // 
-            this.deleteTagButton.Image = ((System.Drawing.Image)(resources.GetObject("deleteTagButton.Image")));
-            this.deleteTagButton.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.deleteTagButton.Location = new System.Drawing.Point(6, 321);
-            this.deleteTagButton.Name = "deleteTagButton";
-            this.deleteTagButton.Size = new System.Drawing.Size(208, 34);
-            this.deleteTagButton.TabIndex = 37;
-            this.deleteTagButton.Text = "Delete Tag";
-            this.deleteTagButton.UseVisualStyleBackColor = true;
-            this.deleteTagButton.Click += new System.EventHandler(this.deleteTagButton_Click);
+            this.dataGridViewTextBoxColumn1.HeaderText = "Column Name";
+            this.dataGridViewTextBoxColumn1.Name = "dataGridViewTextBoxColumn1";
+            // 
+            // TagNameDtSqlite
+            // 
+            this.TagNameDtSqlite.HeaderText = "Tag Name";
+            this.TagNameDtSqlite.Name = "TagNameDtSqlite";
+            this.TagNameDtSqlite.Resizable = System.Windows.Forms.DataGridViewTriState.True;
+            this.TagNameDtSqlite.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic;
+            // 
+            // label56
+            // 
+            this.label56.AutoSize = true;
+            this.label56.Location = new System.Drawing.Point(649, 11);
+            this.label56.Name = "label56";
+            this.label56.Size = new System.Drawing.Size(80, 13);
+            this.label56.TabIndex = 26;
+            this.label56.Text = "Record Interval";
+            // 
+            // sqliteRecordInterval
+            // 
+            this.sqliteRecordInterval.Location = new System.Drawing.Point(726, 8);
+            this.sqliteRecordInterval.Name = "sqliteRecordInterval";
+            this.sqliteRecordInterval.Size = new System.Drawing.Size(40, 20);
+            this.sqliteRecordInterval.TabIndex = 27;
+            // 
+            // label57
+            // 
+            this.label57.AutoSize = true;
+            this.label57.Location = new System.Drawing.Point(767, 11);
+            this.label57.Name = "label57";
+            this.label57.Size = new System.Drawing.Size(12, 13);
+            this.label57.TabIndex = 28;
+            this.label57.Text = "s";
             // 
             // ConfigBuilder
             // 
@@ -2161,6 +2195,7 @@ namespace IndustrialGatewayToWebServer
             this.Services.ResumeLayout(false);
             this.Services.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.sqliteRecordInterval)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -2292,8 +2327,6 @@ namespace IndustrialGatewayToWebServer
         private System.Windows.Forms.TextBox currentSQLiteString;
         private System.Windows.Forms.CheckBox MySQLenableCB;
         private System.Windows.Forms.CheckBox SQLiteEnableCB;
-        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
-        private System.Windows.Forms.DataGridViewComboBoxColumn dataGridViewComboBoxColumn1;
         private System.Windows.Forms.TextBox tagGroupNameAdd;
         private System.Windows.Forms.Label label41;
         private System.Windows.Forms.DataGridView groupDt;
@@ -2355,6 +2388,12 @@ namespace IndustrialGatewayToWebServer
         private System.Windows.Forms.ToolStripMenuItem RestartServiceButton;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem setupServicesMenuButton;
+        private System.ServiceProcess.ServiceController serviceController2;
+        private System.Windows.Forms.DataGridViewTextBoxColumn dataGridViewTextBoxColumn1;
+        private System.Windows.Forms.DataGridViewComboBoxColumn TagNameDtSqlite;
+        private System.Windows.Forms.NumericUpDown sqliteRecordInterval;
+        private System.Windows.Forms.Label label56;
+        private System.Windows.Forms.Label label57;
     }
 }
 

@@ -1,17 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
+﻿using EasyModbus;
+using System;
 using System.Data;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Net.Sockets;
-using System.ServiceProcess;
-using System.Text;
-using System.Threading.Tasks;
-using NModbus;
-using EasyModbus;
 using System.Data.SQLite;
+using System.ServiceProcess;
 using System.Timers;
 
 namespace IGW_modbusTCPService
@@ -32,12 +23,12 @@ namespace IGW_modbusTCPService
 
         protected override void OnStart(string[] args)
         {
-            _timer.Interval =   1000;
+            _timer.Interval = 1000;
             _timer.Elapsed += _timer_Elapsed;
             _timer.Start();
         }
 
-        public void dbWrite(string tag_value,DateTime tag_time,string tag)
+        public void dbWrite(string tag_value, DateTime tag_time, string tag)
         {
             using (var connectDb = new SQLiteConnection(sqllitedb_constr))
             {
@@ -152,7 +143,7 @@ namespace IGW_modbusTCPService
 
                     }
                 }
-                connectDb2.Close(); 
+                connectDb2.Close();
             }
 
             foreach (DataRow row in connTable.Rows)
@@ -274,15 +265,15 @@ namespace IGW_modbusTCPService
                     }
 
                 }
-                    
 
-                    else
-                    {
-                        continue;
-                    }
 
-                    _client.Disconnect();
-   
+                else
+                {
+                    continue;
+                }
+
+                _client.Disconnect();
+
             }
             connTable.Clear();
             modbusTCPTagsTable.Clear();
@@ -416,7 +407,7 @@ namespace IGW_modbusTCPService
             _timer.Stop();
             _timer.Dispose();
         }
-    } 
+    }
 
 
 
@@ -430,7 +421,7 @@ namespace IGW_modbusTCPService
 
 
 
-   
+
 
 
 

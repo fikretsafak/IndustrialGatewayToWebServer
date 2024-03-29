@@ -2,17 +2,14 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
 using System.Data.SQLite;
+using System.Diagnostics;
+using System.Drawing;
 using System.IO;
 using System.IO.Ports;
-using System.Diagnostics;
 using System.ServiceProcess;
 using System.Threading;
+using System.Windows.Forms;
 
 
 namespace IndustrialGatewayToWebServer
@@ -32,7 +29,7 @@ namespace IndustrialGatewayToWebServer
         string SelectedTreeNode;
         string SelectedNAMEforUpdate;
         string[] tagTypeArray = new string[10000];
-        string[ , ] groupCount = new string[10000,10000];
+        string[,] groupCount = new string[10000, 10000];
         string mySQLconString;
         string SQLiteconString;
         string SQLiteCreatefolderPath;
@@ -41,7 +38,12 @@ namespace IndustrialGatewayToWebServer
         string selectedTag;
         bool groupFilledstatus;
         string mqttTagNameString = "";
-        
+        string SQLiteAddColumns = "";
+        string TableCreateString = "";
+        string SQLiteAddTags = "";
+        string IPaddress1;
+
+
 
 
         public ConfigBuilder()
@@ -174,24 +176,26 @@ namespace IndustrialGatewayToWebServer
                                                                                 DATABASE TEXT NOT NULL,
                                                                                 CONN_STRING TEXT NOT NULL,
                                                                                 TABLE_CREATE_STRING TEXT NOT NULL); ", connectDb))
-                      cmdDb.ExecuteNonQuery();
+                        cmdDb.ExecuteNonQuery();
 
-                     using (var cmdDb = new SQLiteCommand($"INSERT INTO MYSQLSERVER(STATUS,SERVER_IP,USERNAME,PASSWORD,DATABASE,CONN_STRING,TABLE_CREATE_STRING) values('False',' ',' ','',' ',' ',' ')", connectDb))
-  
-                     
-                     cmdDb.ExecuteNonQuery();
+                    using (var cmdDb = new SQLiteCommand($"INSERT INTO MYSQLSERVER(STATUS,SERVER_IP,USERNAME,PASSWORD,DATABASE,CONN_STRING,TABLE_CREATE_STRING) values('False',' ',' ','',' ',' ',' ')", connectDb))
+
+
+                        cmdDb.ExecuteNonQuery();
 
                     using (var cmdDb = new SQLiteCommand(@"CREATE TABLE SQLITESERVER (
                                                                                 STATUS TEXT NOT NULL,
                                                                                 FILE_PATH TEXT NOT NULL,
                                                                                 CONN_STRING TEXT NOT NULL,
-                                                                                TABLE_CREATE_STRING TEXT NOT NULL); ", connectDb))
-                    cmdDb.ExecuteNonQuery();
+                                                                                TABLE_CREATE_STRING TEXT NOT NULL,
+                                                                                REC_INTERVAL TEXT,
+                                                                                TAG TEXT); ", connectDb))
+                        cmdDb.ExecuteNonQuery();
 
                     using (var cmdDb = new SQLiteCommand($"INSERT INTO SQLITESERVER(STATUS,FILE_PATH,CONN_STRING,TABLE_CREATE_STRING) values('False',' ',' ',' ')", connectDb))
 
 
-                    cmdDb.ExecuteNonQuery();
+                        cmdDb.ExecuteNonQuery();
 
                     using (var cmdDb = new SQLiteCommand(@"CREATE TABLE MQTT (
                                                                                 CONN_NAME  TEXT NOT NULL,
@@ -202,7 +206,7 @@ namespace IndustrialGatewayToWebServer
                                                                                 PASSWORD TEXT, 
                                                                                 TOPIC TEXT,
                                                                                 TAGS TEXT NOT NULL); ", connectDb))
-                    cmdDb.ExecuteNonQuery();
+                        cmdDb.ExecuteNonQuery();
                     connectDb.Close();
                 }
             }
@@ -616,19 +620,19 @@ namespace IndustrialGatewayToWebServer
         {
             using (var connectDb = new SQLiteConnection("data source=" + systemFilePath + "config.db; version=3; default timeout=10000; pooling=true; max pool size=100"))
             {
-                    using (var cmdDb = new SQLiteCommand($"UPDATE MYSQLSERVER SET STATUS = '{MySQLenableCB.Checked}'", connectDb))
-                    {
+                using (var cmdDb = new SQLiteCommand($"UPDATE MYSQLSERVER SET STATUS = '{MySQLenableCB.Checked}'", connectDb))
+                {
 
-                        try
-                        {
-                            cmdDb.Connection.Open();
-                            cmdDb.ExecuteNonQuery();
-                            cmdDb.Connection.Close();
-                         }
-                        catch (Exception)
-                        {
-                        }
+                    try
+                    {
+                        cmdDb.Connection.Open();
+                        cmdDb.ExecuteNonQuery();
+                        cmdDb.Connection.Close();
                     }
+                    catch (Exception)
+                    {
+                    }
+                }
             }
         }
 
@@ -636,7 +640,7 @@ namespace IndustrialGatewayToWebServer
         {
             using (var connectDb = new SQLiteConnection("data source=" + systemFilePath + "config.db; version=3; default timeout=10000; pooling=true; max pool size=100"))
             {
-                using (var cmdDb = new SQLiteCommand($"UPDATE MYSQLSERVER  SET SERVER_IP = '{mySQLserverAddress.Text}',USERNAME='{mySQLusername.Text}',PASSWORD='{mySQLpassword.Text}',DATABASE='{mySQLdatabaseName.Text}',CONN_STRING='{mySQLconString}' " , connectDb))
+                using (var cmdDb = new SQLiteCommand($"UPDATE MYSQLSERVER  SET SERVER_IP = '{mySQLserverAddress.Text}',USERNAME='{mySQLusername.Text}',PASSWORD='{mySQLpassword.Text}',DATABASE='{mySQLdatabaseName.Text}',CONN_STRING='{mySQLconString}' ", connectDb))
                 {
                     try
                     {
@@ -778,7 +782,7 @@ namespace IndustrialGatewayToWebServer
             {
                 using (var connectDb = new SQLiteConnection("data source=" + systemFilePath + "config.db; version=3; default timeout=10000; pooling=true; max pool size=100"))
                 {
-                    if(SameNameStatusRTU)
+                    if (SameNameStatusRTU)
                     {
                         MessageBox.Show("Check Device Name Must be Unique.");
                     }
@@ -822,7 +826,7 @@ namespace IndustrialGatewayToWebServer
                             }
                         }
                     }
-                    
+
                 }
             }
         }
@@ -837,7 +841,7 @@ namespace IndustrialGatewayToWebServer
         private void fillDeviceNameCombo()
         {
             TagDeviceNameCombo.Items.Clear();
-           for (int i = 0; i < commDt.Rows.Count; i++)
+            for (int i = 0; i < commDt.Rows.Count; i++)
             {
                 string devName = commDt.Rows[i].Cells[1].Value.ToString();
                 TagDeviceNameCombo.Items.Add(devName);
@@ -857,10 +861,12 @@ namespace IndustrialGatewayToWebServer
         private void fillTagsNameComboProperties()
         {
             TagNameDt.Items.Clear();
+            TagNameDtSqlite.Items.Clear();
             for (int i = 0; i < readTagDt.Rows.Count; i++)
             {
                 string tagName = readTagDt.Rows[i].Cells[0].Value.ToString();
                 TagNameDt.Items.Add(tagName);
+                TagNameDtSqlite.Items.Add(tagName);
             }
         }
 
@@ -901,13 +907,14 @@ namespace IndustrialGatewayToWebServer
                 string devName = commDt.Rows[i].Cells[1].Value.ToString();
                 string IPaddress = commDt.Rows[i].Cells[3].Value.ToString();
                 string comPort = commDt.Rows[i].Cells[4].Value.ToString();
+                string slaveID = commDt.Rows[i].Cells[5].Value.ToString();
                 if (IPaddress == " ")
                 {
-                    TagTreeView.Nodes.Add(comPort + " - " + devName);
+                    TagTreeView.Nodes.Add(comPort + " - " + slaveID + " - " + devName);
                 }
                 else
                 {
-                    TagTreeView.Nodes.Add(IPaddress + " - " + devName);
+                    TagTreeView.Nodes.Add(IPaddress + " - " + slaveID + " - " + devName);
                 }
                 for (int m = 0; m < groupDt.Rows.Count; m++)
                 {
@@ -915,42 +922,42 @@ namespace IndustrialGatewayToWebServer
                     groupCount[i, m] = groupName;
                 }
 
-                    for (int k = 0; k < groupDt.Rows.Count; k++)
-                    {
+                for (int k = 0; k < groupDt.Rows.Count; k++)
+                {
                     string groupDevName = groupDt.Rows[k].Cells[1].Value.ToString();
                     string groupName = groupDt.Rows[k].Cells[0].Value.ToString();
                     TagTreeView.Nodes[i].ImageIndex = 1;
                     if (devName == groupDevName)
+                    {
+                        TagTreeView.Nodes[i].Nodes.Add(groupName);
+                        TagTreeView.Nodes[i].ImageIndex = 1;
+
+                        for (int j = 0; j < tagDt.Rows.Count; j++)
                         {
-                            TagTreeView.Nodes[i].Nodes.Add(groupName);
-                            TagTreeView.Nodes[i].ImageIndex = 1;
-                        
-                            for (int j = 0; j < tagDt.Rows.Count; j++)
+                            string tagName = tagDt.Rows[j].Cells[0].Value.ToString();
+                            string tagGroup = tagDt.Rows[j].Cells[2].Value.ToString();
+                            if (tagGroup == groupName)
                             {
-                                string tagName = tagDt.Rows[j].Cells[0].Value.ToString();
-                                string tagGroup = tagDt.Rows[j].Cells[2].Value.ToString();
-                                if (tagGroup == groupName)
-                                {
-                                    TagTreeView.Nodes[i].Nodes[n].Nodes.Add(tagName);
-                                    TagTreeView.Nodes[i].Nodes[n].ImageIndex = 2;
-                                }
-                                else
-                                {
-                                     //TagTreeView.Nodes[i].Nodes[n].ImageIndex = 5;
-                                 }
+                                TagTreeView.Nodes[i].Nodes[n].Nodes.Add(tagName);
+                                TagTreeView.Nodes[i].Nodes[n].ImageIndex = 2;
                             }
-                            n = n + 1;
+                            else
+                            {
+                                //TagTreeView.Nodes[i].Nodes[n].ImageIndex = 5;
+                            }
                         }
+                        n = n + 1;
+                    }
 
-                        else
-                        {
-
-                        }
+                    else
+                    {
 
                     }
-                      n = 0;
+
+                }
+                n = 0;
             }
-            
+
         }
 
 
@@ -999,9 +1006,9 @@ namespace IndustrialGatewayToWebServer
                         {
                             string tagName = tagDt.Rows[j].Cells[0].Value.ToString();
                             string tagGroup = tagDt.Rows[j].Cells[2].Value.ToString();
-                            if (tagGroup == groupName )
+                            if (tagGroup == groupName)
                             {
-                                if(mqttTreeView.Nodes[i].Checked)
+                                if (mqttTreeView.Nodes[i].Checked)
                                 {
                                     mqttTreeView.Nodes[i].Nodes[n].Nodes.Add(tagName);
                                     mqttTreeView.Nodes[i].Nodes[n].ImageIndex = 2;
@@ -1068,13 +1075,13 @@ namespace IndustrialGatewayToWebServer
                             }
                         }
                     }
-                    if(groupFilledstatus)
+                    if (groupFilledstatus)
                     {
                         MessageBox.Show("Not deleted group because it is filled");
                     }
                 }
 
-                if(tagDt.Rows.Count == 0)
+                if (tagDt.Rows.Count == 0)
                 {
                     using (var cmdDb = new SQLiteCommand($"DELETE FROM TAG_GROUP WHERE GROUP_NAME = '{groupName}' AND DEVICE_NAME = '{devName[0]}'", connectDb))
                     {
@@ -1142,7 +1149,7 @@ namespace IndustrialGatewayToWebServer
                             string tempGroupName = dtr1["GROUP_NAME"].ToString();
                             tagGroupNameUpdate.Text = tempGroupName.Replace(@dtr1["DEVICE_NAME"].ToString() + ".", @"");
                             tempTagName = dtr1["TAG_NAME"].ToString();
-                            SelectTagName.Text = tempTagName.Replace(@dtr1["GROUP_NAME"].ToString()+".", @"");
+                            SelectTagName.Text = tempTagName.Replace(@dtr1["GROUP_NAME"].ToString() + ".", @"");
                             SelectDeviceName.SelectedItem = dtr1["DEVICE_NAME"].ToString();
                             SelectTagType.SelectedItem = dtr1["TAG_TYPE"].ToString();
                             SelectFunction.SelectedItem = dtr1["FUNCTION"].ToString();
@@ -1175,10 +1182,10 @@ namespace IndustrialGatewayToWebServer
             SelectedTreeNode = e.Node.ToString();
             selectedTag = SelectedTreeNode.Substring(10);
             string[] isThatTag = selectedTag.Split('.');
-            if(isThatTag.Length != 3)
+            if (isThatTag.Length != 3)
             {
                 SelectTagName.Text = "";
-                SelectDeviceName.SelectedItem = "" ;
+                SelectDeviceName.SelectedItem = "";
                 tagGroupNameUpdate.Text = "";
                 SelectTagType.SelectedItem = " ";
                 SelectFunction.SelectedItem = " ";
@@ -1232,41 +1239,46 @@ namespace IndustrialGatewayToWebServer
                     }
                     else
                     {
-                        using (var cmdDb = new SQLiteCommand($"INSERT INTO TAGS (TAG_NAME,DEVICE_NAME,GROUP_NAME,TAG_TYPE,FUNCTION,DISPLAY_MODE,TAG_ADDRESS) values('{TagDeviceNameCombo.SelectedItem + "." + tagGroupNameAdd.Text + "." + tagNameAdd.Text}','{TagDeviceNameCombo.SelectedItem}','{TagDeviceNameCombo.SelectedItem + "."+ tagGroupNameAdd.Text}','{tagTypeAdd.SelectedItem}','{tagFunctionAdd.SelectedItem}','{tagDisplayAdd.SelectedItem}','{tagAddressAdd.Text}')", connectDb))
+
+
+
+
+
+                        using (var cmdDb = new SQLiteCommand($"INSERT INTO TAGS (TAG_NAME,DEVICE_NAME,GROUP_NAME,TAG_TYPE,FUNCTION,DISPLAY_MODE,TAG_ADDRESS) values('{TagDeviceNameCombo.SelectedItem + "." + tagGroupNameAdd.Text + "." + tagNameAdd.Text}','{TagDeviceNameCombo.SelectedItem}','{TagDeviceNameCombo.SelectedItem + "." + tagGroupNameAdd.Text}','{tagTypeAdd.SelectedItem}','{tagFunctionAdd.SelectedItem}','{tagDisplayAdd.SelectedItem}','{tagAddressAdd.Text}')", connectDb))
                         {
 
                             try
                             {
                                 cmdDb.Connection.Open();
                                 cmdDb.ExecuteNonQuery();
-                                
-                                using (var cmdDb2 = new SQLiteCommand($"SELECT * FROM TAG_GROUP WHERE GROUP_NAME ='{TagDeviceNameCombo.SelectedItem + "."+ tagGroupNameAdd.Text}'", connectDb))
-                                {
-                                     SQLiteDataReader dtr1 = cmdDb2.ExecuteReader();
-                                     if (dtr1.Read())
-                                     {
 
-                                     }
-                                     else
-                                     {
+                                using (var cmdDb2 = new SQLiteCommand($"SELECT * FROM TAG_GROUP WHERE GROUP_NAME ='{TagDeviceNameCombo.SelectedItem + "." + tagGroupNameAdd.Text}'", connectDb))
+                                {
+                                    SQLiteDataReader dtr1 = cmdDb2.ExecuteReader();
+                                    if (dtr1.Read())
+                                    {
+
+                                    }
+                                    else
+                                    {
                                         using (var cmdDb1 = new SQLiteCommand($"INSERT INTO TAG_GROUP (GROUP_NAME,DEVICE_NAME) values('{TagDeviceNameCombo.SelectedItem + "." + tagGroupNameAdd.Text}','{TagDeviceNameCombo.SelectedItem}')", connectDb))
                                         {
-                                           try
-                                           {
-                                             cmdDb1.ExecuteNonQuery();
-                                           }
-                                                        catch (Exception)
-                                                         {
-                                                         }
+                                            try
+                                            {
+                                                cmdDb1.ExecuteNonQuery();
+                                            }
+                                            catch (Exception)
+                                            {
+                                            }
                                         }
-                                     }
+                                    }
 
                                 }
 
-                               MessageBox.Show("Tag Added succesfuly.");
-                               DataViewFillForTags($"SELECT * FROM TAGS");
-                               DataViewFillForGroup($"SELECT * FROM TAG_GROUP");
-                               TreeViewFill();
+                                MessageBox.Show("Tag Added succesfuly.");
+                                DataViewFillForTags($"SELECT * FROM TAGS");
+                                DataViewFillForGroup($"SELECT * FROM TAG_GROUP");
+                                TreeViewFill();
                                 MQTTTreeViewFill();
 
 
@@ -1378,7 +1390,7 @@ namespace IndustrialGatewayToWebServer
                     }
                     else
                     {
-                        using (var cmdDb = new SQLiteCommand($"UPDATE TAGS SET TAG_NAME = '{SelectDeviceName.SelectedItem + "." + tagGroupNameUpdate.Text+"."+SelectTagName.Text}',GROUP_NAME = '{SelectDeviceName.SelectedItem + "."+tagGroupNameUpdate.Text}' , DEVICE_NAME = '{SelectDeviceName.SelectedItem}',TAG_TYPE='{SelectTagType.SelectedItem}',FUNCTION = '{SelectFunction.SelectedItem}',DISPLAY_MODE='{SelectDisplayMode.SelectedItem}',TAG_ADDRESS = '{SelectTagAddress.Text}' WHERE TAG_NAME = '{SelectedNAMEforUpdate}'", connectDb))
+                        using (var cmdDb = new SQLiteCommand($"UPDATE TAGS SET TAG_NAME = '{SelectDeviceName.SelectedItem + "." + tagGroupNameUpdate.Text + "." + SelectTagName.Text}',GROUP_NAME = '{SelectDeviceName.SelectedItem + "." + tagGroupNameUpdate.Text}' , DEVICE_NAME = '{SelectDeviceName.SelectedItem}',TAG_TYPE='{SelectTagType.SelectedItem}',FUNCTION = '{SelectFunction.SelectedItem}',DISPLAY_MODE='{SelectDisplayMode.SelectedItem}',TAG_ADDRESS = '{SelectTagAddress.Text}' WHERE TAG_NAME = '{SelectedNAMEforUpdate}'", connectDb))
                         {
 
                             try
@@ -1455,7 +1467,7 @@ namespace IndustrialGatewayToWebServer
                             cmdDb.Connection.Open();
                             cmdDb.ExecuteNonQuery();
                             DataViewFillForTags($"SELECT * FROM TAGS");
-                            
+
                             TreeViewFill();
                         }
 
@@ -1501,7 +1513,7 @@ namespace IndustrialGatewayToWebServer
         {
             string filePathDb = SQLiteCreatefolderPath.Replace(@"\", @"\\");
 
-            if (string.IsNullOrEmpty(selectedSQLiteFolder.Text) || string.IsNullOrEmpty(SQLiteDbName.Text) )
+            if (string.IsNullOrEmpty(selectedSQLiteFolder.Text) || string.IsNullOrEmpty(SQLiteDbName.Text))
             {
                 MessageBox.Show("Make sure all info is filled.");
             }
@@ -1653,7 +1665,7 @@ namespace IndustrialGatewayToWebServer
                                 cmdDb.Connection.Open();
                                 cmdDb.ExecuteNonQuery();
 
-                                
+
                                 MessageBox.Show("MQTT Device Added succesfuly.");
                                 DataViewFillForMQTT($"SELECT * FROM MQTT");
                                 TreeViewFill();
@@ -1697,17 +1709,17 @@ namespace IndustrialGatewayToWebServer
                 if (node.Checked)
                 {
                     string[] temp = node.Text.Split('.');
-                    if(temp.Length !=3)
+                    if (temp.Length != 3)
                     {
 
                     }
                     else
                     {
-                      list.Add(node);
-                      listBox1.Items.Add(node.ToString().Substring(10));
-                      mqttTagNameString = mqttTagNameString+node.ToString().Substring(10)+";";
+                        list.Add(node);
+                        listBox1.Items.Add(node.ToString().Substring(10));
+                        mqttTagNameString = mqttTagNameString + node.ToString().Substring(10) + ";";
                     }
-                
+
                 }
 
                 LookupChecks(node.Nodes, list);
@@ -1736,8 +1748,8 @@ namespace IndustrialGatewayToWebServer
             string modbusPath = newPathTemp + "\\" + "IGW_modbusTCPService\\bin\\Debug\\IGW_modbusTCPService.exe";
             string mqttPath = newPathTemp + "\\" + "IGW_mqttService\\bin\\Debug\\IGW_mqttService.exe";
 
-            Process.Start(@"C:\Windows\system32\sc.exe", "create IGW_MQTTService binPath="+mqttPath+" start= auto ");
-            Process.Start(@"C:\Windows\system32\sc.exe", "create IGW_ModbusTCPService binPath="+modbusPath+" start= auto");
+            Process.Start(@"C:\Windows\system32\sc.exe", "create IGW_MQTTService binPath=" + mqttPath + " start= auto ");
+            Process.Start(@"C:\Windows\system32\sc.exe", "create IGW_ModbusTCPService binPath=" + modbusPath + " start= auto");
         }
 
         private void ınfoToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1745,15 +1757,15 @@ namespace IndustrialGatewayToWebServer
 
             string[] newPath = projectPath.Split('\\');
             string newPathTemp = newPath[0];
-            for (int i = 1; i < newPath.Length-3; i++)
+            for (int i = 1; i < newPath.Length - 3; i++)
             {
-                newPathTemp = newPathTemp +"\\"+ newPath[i];
+                newPathTemp = newPathTemp + "\\" + newPath[i];
             }
             string modbusPath = newPathTemp + "\\" + "IGW_modbusTCPService\\bin\\Debug\\IGW_modbusTCPService.exe";
             string mqttPath = newPathTemp + "\\" + "IGW_mqttService\\bin\\Debug\\IGW_mqttService.exe";
         }
 
-        public void serviceStatusControl(string ServiceName,Label statusLabel)
+        public void serviceStatusControl(string ServiceName, Label statusLabel)
         {
             ServiceController serviceController = new ServiceController(ServiceName);
             switch (serviceController.Status)
@@ -1769,13 +1781,13 @@ namespace IndustrialGatewayToWebServer
                     break;
                 case ServiceControllerStatus.Running:
                     statusLabel.Text = "Running";
-                    statusLabel.BackColor = Color.LimeGreen ;
+                    statusLabel.BackColor = Color.LimeGreen;
                     break;
                 case ServiceControllerStatus.StartPending:
                     statusLabel.Text = "Start Pending";
                     break;
                 case ServiceControllerStatus.Stopped:
-                    statusLabel.Text="Stopped";
+                    statusLabel.Text = "Stopped";
                     statusLabel.BackColor = Color.Red;
                     break;
                 case ServiceControllerStatus.StopPending:
@@ -1890,5 +1902,121 @@ namespace IndustrialGatewayToWebServer
 
             }
         }
+
+        private void SQLiteAddTableButton_Click(object sender, EventArgs e)
+        {
+            if (SQLiteDt.Rows.Count > 1)
+            {
+                for (int i = 0; i < SQLiteDt.Rows.Count - 1; i++)
+                {
+                    SQLiteAddColumns = SQLiteAddColumns + SQLiteDt.Rows[i].Cells[0].Value.ToString() + " TEXT NOT NULL,";
+
+                    try
+                    {
+                        SQLiteAddTags = SQLiteAddTags + SQLiteDt.Rows[i].Cells[1].Value.ToString() + ";";
+                    }
+                    catch (Exception)
+                    {
+                        MessageBox.Show("Please select tag");
+                        break;
+                    }
+
+                }
+                TableCreateString = "CREATE TABLE " + SQLiteTableName.Text + " (ID INTEGER, TIME TEXT," + SQLiteAddColumns.ToString() + "PRIMARY KEY(\"ID\"))";
+                SQLiteAddColumns = "";
+
+
+            }
+            else
+            {
+                MessageBox.Show("Please fill table");
+            }
+
+
+            if (string.IsNullOrEmpty(SQLiteTableName.Text))
+            {
+                MessageBox.Show("Please write table name");
+            }
+            else
+            {
+                string connStringSQLite = "data source=" + currentSQLiteString.Text + "; version=3; default timeout=10000; pooling=true; max pool size=100";
+                using (var connectDb = new SQLiteConnection("data source=" + systemFilePath + "config.db; version=3; default timeout=10000; pooling=true; max pool size=100"))
+                {
+                    using (var cmdDb = new SQLiteCommand($"UPDATE SQLITESERVER SET TABLE_CREATE_STRING = '{TableCreateString}', FILE_PATH = '{currentSQLiteString.Text}',CONN_STRING = '{connStringSQLite}',REC_INTERVAL = '{sqliteRecordInterval.Value.ToString()}',TAG = '{SQLiteAddTags.Substring(0, SQLiteAddTags.Length - 1)}' ", connectDb))
+                    {
+                        try
+                        {
+                            cmdDb.Connection.Open();
+                            cmdDb.ExecuteNonQuery();
+                            cmdDb.Connection.Close();
+                            MessageBox.Show("Settings Saved");
+                        }
+                        catch (Exception)
+                        {
+                        }
+                    }
+                }
+
+
+                using (var connectDb2 = new SQLiteConnection(connStringSQLite))
+                {
+
+                    using (var cmdDb2 = new SQLiteCommand(TableCreateString, connectDb2))
+                    {
+                        try
+                        {
+                            cmdDb2.Connection.Open();
+                            cmdDb2.ExecuteNonQuery();
+                            cmdDb2.Connection.Close();
+                            MessageBox.Show("Table Created");
+                        }
+                        catch (Exception)
+                        {
+                            DialogResult diar = MessageBox.Show("Table Already exists if Updated lost all recorded data ?", "Confirm", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                            if (diar == DialogResult.Yes)
+                            {
+                                using (var cmdDb3 = new SQLiteCommand($"DROP TABLE " + SQLiteTableName.Text, connectDb2))
+                                {
+                                    try
+                                    {
+
+                                        cmdDb3.Connection.Open();
+                                        cmdDb3.ExecuteNonQuery();
+
+                                        using (var cmdDb4 = new SQLiteCommand(TableCreateString, connectDb2))
+                                        {
+                                            try
+                                            {
+                                                cmdDb4.Connection.Open();
+                                                cmdDb4.Connection.Close();
+                                                cmdDb4.ExecuteNonQuery();
+                                                MessageBox.Show("Table Updated");
+                                            }
+                                            catch
+                                            {
+
+                                            }
+                                        }
+
+
+                                    }
+                                    catch
+                                    {
+
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+
+
+                }
+
+            }
+            SQLiteAddTags = "";
+
+        }
     }
 }
+
